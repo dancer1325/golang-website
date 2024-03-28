@@ -89,6 +89,9 @@
     * NOT blocking operation
     * once it tries to communicate → keep going for the next line
 
+# Restoring sequencing
+* TODO:
+
 # Note
 * `go run boring.go`
   * NO concurrent program
