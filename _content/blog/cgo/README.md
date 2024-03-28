@@ -1,6 +1,8 @@
 * allows
   * Go packages — call - C code
   * Go source + C files → 1! Go package
+* C
+  * NOT portable
 
 # How to run locally the package?
 * Solution: TODO:
