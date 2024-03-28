@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -7,6 +8,7 @@ import (
 	"math/cmplx"
 )
 
+// variable declarations -- can be "factored" `()` into -- blocks
 var (
 	ToBe   bool       = false
 	MaxInt uint64     = 1<<64 - 1
