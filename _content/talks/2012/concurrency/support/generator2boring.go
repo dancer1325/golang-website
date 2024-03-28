@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -10,6 +11,7 @@ import (
 
 // START1 OMIT
 func main() {
+	// == several instances of a service are created
 	joe := boring("Joe") // HL
 	ann := boring("Ann") // HL
 	for i := 0; i < 5; i++ {
@@ -18,6 +20,7 @@ func main() {
 	}
 	fmt.Println("You're both boring; I'm leaving.")
 }
+
 // STOP1 OMIT
 
 // START2 OMIT
@@ -31,5 +34,5 @@ func boring(msg string) <-chan string { // Returns receive-only channel of strin
 	}()
 	return c // Return the channel to the caller. // HL
 }
-// STOP2 OMIT
 
+// STOP2 OMIT

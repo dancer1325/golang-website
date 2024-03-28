@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -7,10 +8,10 @@ func main() {
 
 	// START1 OMIT
 	// Declaring and initializing.
-	var c chan int
+	var c chan int // channel of int
 	c = make(chan int)
 	// or
-	c := make(chan int) // HL
+	c := make(chan int) // HL  -- Declare & initialize in 1! step
 	// STOP1 OMIT
 
 	// START2 OMIT

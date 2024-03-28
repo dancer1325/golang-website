@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -9,8 +10,11 @@ import (
 )
 
 func main() {
+
+	// Run the boring() as go routine
 	go boring("boring!") // HL
 }
+
 // STOP OMIT
 
 func boring(msg string) {

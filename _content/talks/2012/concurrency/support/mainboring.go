@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -11,8 +12,10 @@ import (
 func main() {
 	boring("boring!")
 }
+
 // STOP OMIT
 
+// less random deterministic
 func boring(msg string) {
 	for i := 0; ; i++ {
 		fmt.Println(msg, i)
