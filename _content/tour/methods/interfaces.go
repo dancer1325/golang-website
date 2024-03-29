@@ -21,12 +21,16 @@ func main() {
 	f := MyFloat(-math.Sqrt2)
 	v := Vertex{3, 4}
 
-	a = f  // MyFloat has an implementation of Abs() method -> MyFloat implements Abser
+	// At runtime, the type  is changed
+	fmt.Println(fmt.Sprintf("Previous to assign to f %T", a))
+	a = f // MyFloat has an implementation of Abs() method -> MyFloat implements Abser
+	fmt.Println(fmt.Sprintf("After assigning to f %T", a))
 	a = &v // *Vertex has an implementation of Abs() method -> *Vertex implements Abser
+	fmt.Println(fmt.Sprintf("After assigning to v %T", a))
 
 	// In the following line, v is a Vertex (NOT *Vertex)
-	// Vertex has NOT implementation of Abs() method -> Vertex NOT implement Abser -> Error in runtime
-	a = v
+	// Vertex has NOT implementation of Abs() method -> Vertex NOT implement Abser -> Error in runtime (Uncomment next line to check)
+	//a = v
 
 	fmt.Println(a.Abs())
 }
