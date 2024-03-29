@@ -5,6 +5,13 @@
   * `func receiver methodName.. {}`
 * `go run methods.go`
 
+# TODO:
+
+# `type interfaceName interface` -- interface type --
+* := set of method signatures
+* ⚠️ if a value implement interface’s methods → it’s a value of interface type ⚠️
+* `go run intefaces.go`
+
 # `interface{}` -- empty interface - 
 * := `interface` / NO methods
   * 👁️can hold values of any type👁️
