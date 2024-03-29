@@ -1,4 +1,9 @@
-# TODO:
+# Methods
+* NOT classes
+* methods on types can be defined
+* := function with special receiver argument
+  * `func receiver methodName.. {}`
+* `go run methods.go`
 
 # `interface{}` -- empty interface - 
 * := `interface` / NO methods

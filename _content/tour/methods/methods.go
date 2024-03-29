@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -7,10 +8,14 @@ import (
 	"math"
 )
 
+// NOT class exist
+
 type Vertex struct {
 	X, Y float64
 }
 
+// Method
+// (v Vertex)		receiver -- in this case of type Vertex --
 func (v Vertex) Abs() float64 {
 	return math.Sqrt(v.X*v.X + v.Y*v.Y)
 }
