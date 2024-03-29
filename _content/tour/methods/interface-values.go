@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -15,12 +16,14 @@ type T struct {
 	S string
 }
 
+// Method on type *T  -> variable of type *T can be assigned to type I
 func (t *T) M() {
 	fmt.Println(t.S)
 }
 
 type F float64
 
+// Method on type F -> variable of type F can be assigned to type I
 func (f F) M() {
 	fmt.Println(f)
 }
@@ -28,15 +31,20 @@ func (f F) M() {
 func main() {
 	var i I
 
-	i = &T{"Hello"}
+	i = &T{"Hello"} // NO error, because *T implements I's method
 	describe(i)
 	i.M()
 
-	i = F(math.Pi)
+	i = F(math.Pi) // NO error, because F implements I's method
 	describe(i)
 	i.M()
 }
 
+/*
+Display the interface values -- (value, type)
+*/
 func describe(i I) {
+	//  %v	-- value
+	//  %T	-- type
 	fmt.Printf("(%v, %T)\n", i, i)
 }

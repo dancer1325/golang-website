@@ -13,6 +13,11 @@
   * 🧠 although at run time the value stored in the interface variable could change type, statically it’s typed 🧠
 * `go run intefaces.go`
 
+# interface values
+* == `(value, type)`
+* if you call an interface value’s method → underlying `type`'s method (with same name) is executed
+* `go run interface-values.go`
+
 # `interface{}` -- empty interface - 
 * := `interface` / NO methods
   * 👁️can hold values of any type👁️
