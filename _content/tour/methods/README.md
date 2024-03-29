@@ -9,7 +9,7 @@
 
 # `type interfaceName interface` -- interface type --
 * := set of method signatures
-* ⚠️ if a value implement interface’s methods → it’s a value of interface type ⚠️
+* ⚠️ if a variable implements interface’s methods → that interface type can hold it ⚠️
 * `go run intefaces.go`
 
 # `interface{}` -- empty interface - 
