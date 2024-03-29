@@ -49,11 +49,14 @@ func typeAssertions() (interface{}, error) { // OMIT
 	}
 	r = tty
 	// STOP OMIT
+
 	var w io.Writer
-	w = r.(io.Writer)
+	w = r.(io.Writer) // type assertion
 	// STOP OMIT
+
 	var empty interface{}
-	empty = w
+	empty = w // interface value -> (tty, *os.File)
+	// type assertion NOT needed because w statically satisfies the empty interface
 	// STOP OMIT
 	return empty, err
 }
