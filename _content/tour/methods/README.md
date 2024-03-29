@@ -26,4 +26,17 @@
   * code which handles values of unknown type
 * `go run empty-interface.go`
 
+# `:= interfaceName.(underlyingInterfaceValueType)` -- Type assertions --
+* `:= interfaceName.(underlyingInterfaceValueType)`
+  * syntax
+  * returns `interfaceValue’svalue, boolean`
+    * syntax == mutating maps
+    * boolean is optional
+    * if you pass wrong interface value’s type &
+      * boolean passed to return → boolean is false & NOT panic occurs
+      * NOT boolean passed to return → panic occurs
+* allows
+  * getting access to interface value's value
+* `go run type-assertions.go`
+
 # TODO:
