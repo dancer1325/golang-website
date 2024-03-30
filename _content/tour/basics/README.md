@@ -5,7 +5,10 @@
 * (By convention) name == last element of `import`   -- Check packages.go --
 * `go run packages.go`
 
-# TODO:
+# Imports
+* `import (…)`
+  * “factor” all the imports
+* `go run imports.go`
 
 # Variables
 * TODO:
