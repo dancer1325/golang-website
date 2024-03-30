@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"math"
+	//"aa  /here"		// path can NOT contain whitespace
 )
 
 func main() {

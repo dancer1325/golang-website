@@ -8,6 +8,7 @@
 # Imports
 * `import (…)`
   * “factor” all the imports
+  * path reference to packages can NOT contain whitespaces
 * `go run imports.go`
 
 # Variables
