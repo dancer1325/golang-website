@@ -3,6 +3,7 @@
   *  == Packages ⭐
   * starts running the main package
 * (By convention) name == last element of `import`   -- Check packages.go --
+* different can be added in the same directory  -- Check all are main + impossible --
 * `go run packages.go`
 
 # Imports
