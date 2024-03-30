@@ -16,7 +16,3 @@
       * signature — `(t *testing.T)` —
 * how to run?
   * `go test`
-
-# Notes
-* NOT allowed creating different packages in the same directory
-  * -> 'morestrings' was created in a subdirectory
