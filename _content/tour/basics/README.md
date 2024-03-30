@@ -1,3 +1,10 @@
+# Packages
+* ⭐ Go program
+  *  == Packages ⭐
+  * starts running the main package
+* (By convention) name == last element of `import`   -- Check packages.go --
+* `go run packages.go`
+
 # TODO:
 
 # Variables
