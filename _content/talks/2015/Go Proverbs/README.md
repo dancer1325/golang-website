@@ -56,4 +56,14 @@
 # Errors are values.
 * Check '../blog/Errors are values'
 
-# TODO:
+# Don't just check errors, handle them gracefully.
+* Such as
+  * enrich
+  * make something before logging
+ 
+# Design the architecture, name the components, document the details.
+
+# Documentation is for users.
+* From the user perspective
+
+# Don't panic.
