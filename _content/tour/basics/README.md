@@ -26,7 +26,17 @@
   `func functionName(argumentVariable1, argumentVariable2 argumentType, …) returnedType {…}`--
   * if you pass more argumentVariables than defined in the function → errors in Runtime just
   * `(returnedType1, returnedType2, …)` is feasible
-* `go run functions.go` & `go run functions-continued.go` & `go run multiple-results.go`
+  * `(returnedVariable1 returnedType1, returnedVariable2 returnedType2, …)`
+    * named return values
+      * uses
+        * document the meaning
+    * == variables declared as top of the function
+    * “naked” return — `return` —
+      * NOT arguments passed
+      * returns the named return values
+      * uses
+        * short functions 
+* `go run functions.go` & `go run functions-continued.go` & `go run multiple-results.go` & `go run named-results.go`
 
 # Variables
 * TODO:
