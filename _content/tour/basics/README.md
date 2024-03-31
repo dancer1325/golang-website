@@ -80,4 +80,9 @@
   * string -> `""`
 * `go run zero.go`
 
+# `T(v)` -- Type conversions --
+* value `v` — is converted to — type `T`
+* 👁️explicit conversion is required 👁️
+* `go run type-conversions.go`
+
 TODO: Rest
