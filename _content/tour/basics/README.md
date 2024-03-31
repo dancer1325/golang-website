@@ -48,7 +48,10 @@
 * can be initialized
   * 1 / variable
   * → type can be omitted
-* `go run variables.go` & `go run variables-with-initializers.go`
+* `variable := value` — short declaration —
+  * requirements
+    * inside a function
+* `go run variables.go` & `go run variables-with-initializers.go` & `go run short-variable-declarations.go`
 
 # Basic types
 * Are
