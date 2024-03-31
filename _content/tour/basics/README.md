@@ -45,7 +45,10 @@
       * package level
       * function level
 * can be "factored" `()` into -- blocks 
-* `go run variables.go`
+* can be initialized
+  * 1 / variable
+  * → type can be omitted
+* `go run variables.go` & `go run variables-with-initializers.go`
 
 # Basic types
 * Are
