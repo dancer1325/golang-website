@@ -10,7 +10,13 @@
 * `import (…)`
   * “factor” all the imports
   * path reference to packages can NOT contain whitespaces
+* — can only refer to — exported names -- Check exported names section --
 * `go run imports.go`
+
+# Exported names
+* requirement
+  * 👁️ begins with a capital letter 👁️
+* `go run exported-names.go`
 
 # Variables
 * TODO:
