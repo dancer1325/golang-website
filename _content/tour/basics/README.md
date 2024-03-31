@@ -18,6 +18,12 @@
   * 👁️ begins with a capital letter 👁️
 * `go run exported-names.go`
 
+# Functions
+* — accepts — ≥ 0 arguments
+* `func functionName(argumentVarible argumentType, …) returnedType {…}`
+  * `argumentVariable argumentType` ≠ C `argumentType argumentVariable`
+* `go run functions.go`
+
 # Variables
 * TODO:
 * can be "factored" `()` into -- blocks 
