@@ -5,6 +5,7 @@ package main
 
 import "fmt"
 
+// Declare list of variables with same type  -- at package level --
 var c, python, java bool
 
 // TODO: Check `byte` alias for `uint8`
@@ -18,6 +19,7 @@ var (
 )
 
 func main() {
+	// Declare variables  -- at function level --
 	var i int
 	fmt.Println(i, c, python, java, another, name)
 }

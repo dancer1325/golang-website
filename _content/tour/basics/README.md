@@ -39,8 +39,13 @@
 * `go run functions.go` & `go run functions-continued.go` & `go run multiple-results.go` & `go run named-results.go`
 
 # Variables
-* TODO:
+* `var variable1, variable2, … variableType`
+  * allows
+    * declaring list of variables at
+      * package level
+      * function level
 * can be "factored" `()` into -- blocks 
+* `go run variables.go`
 
 # Basic types
 * Are
