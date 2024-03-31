@@ -12,4 +12,7 @@ func add(x, y int) int {
 
 func main() {
 	fmt.Println(add(42, 13))
+
+	// more argumentVariables than defined in the function → errors in Runtime just
+	add(2, 3, 4)
 }

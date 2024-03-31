@@ -24,6 +24,7 @@
   * `argumentVariable argumentType` ≠ C `argumentType argumentVariable`
   * if several consecutive arguments share the type → argumentType can be specified for the last one -- 
   `func functionName(argumentVariable1, argumentVariable2 argumentType, …) returnedType {…}`--
+  * if you pass more argumentVariables than defined in the function → errors in Runtime just
   * `(returnedType1, returnedType2, …)` is feasible
 * `go run functions.go` & `go run functions-continued.go` & `go run multiple-results.go`
 
