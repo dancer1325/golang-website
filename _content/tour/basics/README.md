@@ -22,7 +22,9 @@
 * — accepts — ≥ 0 arguments
 * `func functionName(argumentVarible argumentType, …) returnedType {…}`
   * `argumentVariable argumentType` ≠ C `argumentType argumentVariable`
-* `go run functions.go`
+  * if several consecutive arguments share the type → argumentType can be specified for the last one -- 
+  `func functionName(argumentVariable1, argumentVariable2 argumentType, …) returnedType {…}`--
+* `go run functions.go` & `go run functions-continued.go` 
 
 # Variables
 * TODO:
