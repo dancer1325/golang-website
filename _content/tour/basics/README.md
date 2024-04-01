@@ -85,11 +85,20 @@
 * 👁️explicit conversion is required 👁️
 * `go run type-conversions.go`
 
-
 # Type inference
 * == type NOT specified
 * — inferred from the — value on the right hand side
   * for numeric types — depend on the — precision
 * `go run type-inference.go`
+
+# `const` -- Constants --
+* == constants
+* can be
+  * character
+  * string
+  * boolean
+  * numeric values
+* ⚠️ — NOT valid to declare via — `:` ⚠️
+* `go run constants.go`
 
 TODO: Rest
