@@ -94,10 +94,12 @@
 # `const` -- Constants --
 * == constants
 * can be
-  * character
-  * string
-  * boolean
-  * numeric values
+  * of type
+    * character
+    * string
+    * boolean
+    * numeric values
+  * "factored" `()` into -- blocks == as variables
 * ⚠️ — NOT valid to declare via — `:` ⚠️
 * `go run constants.go`
 

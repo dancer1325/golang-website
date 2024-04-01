@@ -5,7 +5,11 @@ package main
 
 import "fmt"
 
-const Pi = 3.14
+// "factor"  `()` into blocks
+const (
+	Pi     = 3.14
+	Random = 2
+)
 
 func main() {
 	const World = "世界"
