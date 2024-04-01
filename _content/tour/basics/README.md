@@ -104,5 +104,3 @@
 * ⚠️ — NOT valid to declare via — `:` ⚠️
 * type can be inferred also
 * `go run constants.go` & `go run numeric-constants.go`
-
-TODO: Rest
