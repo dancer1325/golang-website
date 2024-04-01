@@ -1,9 +1,11 @@
+//go:build OMIT
 // +build OMIT
 
 package main
 
 import "fmt"
 
+// "factor"  `()` into blocks
 const (
 	// Create a huge number by shifting a 1 bit left 100 places.
 	// In other words, the binary number that is 1 followed by 100 zeroes.
@@ -12,9 +14,17 @@ const (
 	Small = Big >> 99
 )
 
-func needInt(x int) int { return x*10 + 1 }
+func needInt(x int) int {
+	// infer numeric constant value
+	var intNumber = x*10 + 1
+	fmt.Println(fmt.Sprintf("intNumber is of type %T", intNumber))
+	return intNumber
+}
 func needFloat(x float64) float64 {
-	return x * 0.1
+	// infer numeric constant value
+	var float = x * 0.1
+	fmt.Println(fmt.Sprintf("float is of type %T", float))
+	return float
 }
 
 func main() {

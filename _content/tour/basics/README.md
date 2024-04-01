@@ -99,8 +99,10 @@
     * string
     * boolean
     * numeric values
+      * 👁️ typically for high-precision values 👁️
   * "factored" `()` into -- blocks == as variables
 * ⚠️ — NOT valid to declare via — `:` ⚠️
-* `go run constants.go`
+* type can be inferred also
+* `go run constants.go` & `go run numeric-constants.go`
 
 TODO: Rest
