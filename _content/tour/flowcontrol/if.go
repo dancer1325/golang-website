@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -8,6 +9,8 @@ import (
 )
 
 func sqrt(x float64) string {
+	// ()			NOT valid -- in fact, GoLand IDE removes it automatically
+	//if (x < 0) {
 	if x < 0 {
 		return sqrt(-x) + "i"
 	}
