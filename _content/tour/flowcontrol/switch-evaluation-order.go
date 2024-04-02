@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -10,6 +11,9 @@ import (
 func main() {
 	fmt.Println("When's Saturday?")
 	today := time.Now().Weekday()
+
+	// switch initStatement; condition { case....}
+	// initStatement		Optional
 	switch time.Saturday {
 	case today + 0:
 		fmt.Println("Today.")

@@ -85,4 +85,22 @@
 * 👁️explicit conversion is required 👁️
 * `go run type-conversions.go`
 
-TODO: Rest
+# Type inference
+* == type NOT specified
+* — inferred from the — value on the right hand side
+  * for numeric types — depend on the — precision
+* `go run type-inference.go`
+
+# `const` -- Constants --
+* == constants
+* can be
+  * of type
+    * character
+    * string
+    * boolean
+    * numeric values
+      * 👁️ typically for high-precision values 👁️
+  * "factored" `()` into -- blocks == as variables
+* ⚠️ — NOT valid to declare via — `:` ⚠️
+* type can be inferred also
+* `go run constants.go` & `go run numeric-constants.go`

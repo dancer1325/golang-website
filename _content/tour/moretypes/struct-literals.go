@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -9,10 +10,16 @@ type Vertex struct {
 }
 
 var (
-	v1 = Vertex{1, 2}  // has type Vertex
-	v2 = Vertex{X: 1}  // Y:0 is implicit
-	v3 = Vertex{}      // X:0 and Y:0
-	p  = &Vertex{1, 2} // has type *Vertex
+	// Without specifying fields -> by order
+	v1 = Vertex{1, 2}
+
+	// Specifying fields
+	v2 = Vertex{Y: 1} // X:0 is implicit
+
+	v3 = Vertex{} // X:0 and Y:0
+
+	// Pointer to the structVariable
+	p = &Vertex{1, 2} // has type *Vertex
 )
 
 func main() {

@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -8,9 +9,11 @@ import (
 )
 
 func pow(x, n, lim float64) float64 {
+	// if initStatement; condition {…} else {…}
 	if v := math.Pow(x, n); v < lim {
 		return v
 	} else {
+		// v 	defined in if's initStatement is valid also here
 		fmt.Printf("%g >= %g\n", v, lim)
 	}
 	// can't use v here, though

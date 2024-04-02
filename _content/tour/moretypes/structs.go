@@ -1,9 +1,11 @@
+//go:build OMIT
 // +build OMIT
 
 package main
 
 import "fmt"
 
+// type structName struct { fields }
 type Vertex struct {
 	X int
 	Y int
