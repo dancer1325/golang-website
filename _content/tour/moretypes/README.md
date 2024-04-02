@@ -11,3 +11,4 @@
     * operand `i` — generates a → pointer of `i`
   * `nil`
     * zero value of a pointer
+* `go run pointers.go`
