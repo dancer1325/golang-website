@@ -12,3 +12,13 @@
   * `nil`
     * zero value of a pointer
 * `go run pointers.go`
+
+# `type structName struct { fields }` — structs —
+* := collection of fields /
+  * ways to access to the fields
+    * `structVariable.structField`
+    * `(*pointerToStructVariable).structField`
+    * `pointerToStructVariable.structField`
+      * Note: 👁️ unnecessary to use dereference 👁️
+* `&structVariable` — generates a → pointer of `structVariable`
+* `go run structs.go` & `go run struct-fields.go` & `go run struct-pointers.go`
