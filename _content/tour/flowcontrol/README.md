@@ -54,3 +54,10 @@
   * 👁️Optional 👁️
     * if it’s missing == `switch true` → first case enters
 * `go run switch.go` & `go run switch-evaluation-order.go` & `go run switch-with-no-condition.go`
+
+# `defer Expression`
+* allows
+  * once the surrounding function is returned → defer statement is executed
+    * Note: 👁️deferred call’s arguments are evaluated immediately 👁️
+    * last-in-first-out == pushed onto a stack
+* `go run defer.go` & `go run defer-multi.go`
