@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -5,14 +6,38 @@ package main
 import "fmt"
 
 func main() {
+	// *string			type of the pointer, whose type of the value is string
+	var d *string
+	// zero value of a pointer not declared -> nil
+	fmt.Println("d", d)
+
+	// types inferred
 	i, j := 42, 2701
 
-	p := &i         // point to i
-	fmt.Println(*p) // read i through the pointer
-	*p = 21         // set i through the pointer
-	fmt.Println(i)  // see the new value of i
+	// &operand -- generates a -> pointer of the operand
+	p := &i // -- generates a -> pointer of i /  holds the memory address of i
+	fmt.Println("p", p)
+	fmt.Println("*p", *p) // read i through the pointer
+	// pointers are NOT arithmetic
+	//p++
 
-	p = &j         // point to j
-	*p = *p / 37   // divide j through the pointer
-	fmt.Println(j) // see the new value of j
+	// *pointerValue = value
+	*p = 21 // p is a pointer -> *p is the value i
+	fmt.Println("i", i)
+	fmt.Println("*p", *p) // same value as before
+
+	p = &j // -- generates a -> pointer of j / holds the memory address of j -> another value now for p
+	fmt.Println("p", p)
+	fmt.Println("i", i) // i has NOT changed
+	fmt.Println("j", j)
+	*p = *p / 37        // p is a pointer -> *p is the value j which is divided through the pointer
+	fmt.Println("p", p) // Although j changes, pointer does NOT change
+	fmt.Println("j", j)
+
+	// Just declare == zero values
+	var a string
+	b := &a // There is already a memory address booked for that variable, although it's just declared!!
+	fmt.Println("a", a)
+	fmt.Println("b", b)
+
 }
