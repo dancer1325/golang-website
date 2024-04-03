@@ -28,5 +28,37 @@
 # Arrays
 * `[n]T`
   * array of `n` values of type `T`
+  * 0 is the first element
 * 👁️can NOT be resized 👁️
+* `[n]T {fieldsPassingValues}` — array literal —
+  * create a new array value / passes the items values directly
 * `go run array.go`
+
+# Slices
+* == arrays + dynamically-sized
+* == section of an underlying array
+  * Reason: 🧠NOT store any data🧠
+  * → if you change slice’s elements → underlying array’s elements are changed → slices / same underlying array will be affected
+  * capacity — `cap(sliceVariable)` —
+    * := # of elements of the underlying array
+    * if you adjust `highestIndex` →
+      * slice’s length changes
+      * 👁️array NOT change → capacity NOT change 👁️
+    * if you adjust `lowestIndex` →
+      * slice’s length changes &
+      * array changes / drops elements -> capacity changes
+* `[]T`
+  * slice of values of type `T`
+  * 0 is the first element
+  * length of the slice — `len(sliceVariable)` —
+* `[lowestIndex:highestIndex]`
+  * == [lowestIndex, highestIndex)
+    * **Note:** 👁️highestIndex is NOT included 👁️
+  * by default (== if you do NOT specify) →
+    * lowestIndex = 0
+    * highestIndex = slice’s length
+* `[]T {fieldsPassingValues}` — slice literals —
+  * create a new slice value / passes the items values directly
+* practises
+  * more common than array
+* `go run slices.go` & `go run slices-pointers.go` & `go run slice-literals.go` & `go run slice-bounds.go` & `go run slice-len-cap.go`

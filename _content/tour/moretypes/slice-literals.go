@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -5,6 +6,8 @@ package main
 import "fmt"
 
 func main() {
+	// slice literals
+	// pass the items values directly
 	q := []int{2, 3, 5, 7, 11, 13}
 	fmt.Println(q)
 
