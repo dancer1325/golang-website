@@ -14,5 +14,7 @@ func main() {
 	fmt.Println(a)
 
 	primes := [6]int{2, 3, 5, 7, 11, 13}
+	// can NOT be resized		-- Uncomment next line --
+	//primes[9] = 111
 	fmt.Println(primes)
 }
