@@ -8,7 +8,7 @@ import "fmt"
 func main() {
 	// array of 2 values of typ string
 	var a [2]string
-	a[0] = "Hello"
+	a[0] = "Hello" // 0 is the first element
 	a[1] = "World"
 	fmt.Println(a[0], a[1])
 	fmt.Println(a)
