@@ -9,6 +9,7 @@ type Vertex struct {
 	X, Y int
 }
 
+// Struct literals		-- new struct values, passing the fields values directly --
 var (
 	// Without specifying fields -> by order
 	v1 = Vertex{1, 2}

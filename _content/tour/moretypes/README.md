@@ -21,4 +21,6 @@
     * `pointerToStructVariable.structField`
       * Note: 👁️ unnecessary to use dereference 👁️
 * `&structVariable` — generates a → pointer of `structVariable`
-* `go run structs.go` & `go run struct-fields.go` & `go run struct-pointers.go`
+* `structName { fieldsPassingValues }` — struct literal —
+  * create a new struct value / passes the fields values directly
+* `go run structs.go` & `go run struct-fields.go` & `go run struct-pointers.go` & `go run struct-literals.go`
