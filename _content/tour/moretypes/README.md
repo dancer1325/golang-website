@@ -24,3 +24,9 @@
 * `structName { fieldsPassingValues }` — struct literal —
   * create a new struct value / passes the fields values directly
 * `go run structs.go` & `go run struct-fields.go` & `go run struct-pointers.go` & `go run struct-literals.go`
+
+# Arrays
+* `[n]T`
+  * array of `n` values of type `T`
+* 👁️can NOT be resized 👁️
+* `go run array.go`

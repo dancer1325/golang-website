@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -5,6 +6,7 @@ package main
 import "fmt"
 
 func main() {
+	// array of 2 values of typ string
 	var a [2]string
 	a[0] = "Hello"
 	a[1] = "World"
