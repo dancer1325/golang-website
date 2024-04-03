@@ -51,14 +51,19 @@
   * slice of values of type `T`
   * 0 is the first element
   * length of the slice — `len(sliceVariable)` —
-* `[lowestIndex:highestIndex]`
-  * == [lowestIndex, highestIndex)
-    * **Note:** 👁️highestIndex is NOT included 👁️
-  * by default (== if you do NOT specify) →
-    * lowestIndex = 0
-    * highestIndex = slice’s length
+* ways to create slices 
+  * `[lowestIndex:highestIndex]`
+    * == [lowestIndex, highestIndex)
+      * **Note:** 👁️highestIndex is NOT included 👁️
+    * by default (== if you do NOT specify) →
+      * lowestIndex = 0
+      * highestIndex = slice’s length
+  * `make([]T, lengthValue, capacityValue)`
+    * `capacityValue` optional
+      * if you do NOT specify → `capacityValue` = `lengthValue`
 * `[]T {fieldsPassingValues}` — slice literals —
   * create a new slice value / passes the items values directly
+* zero values is `nil`
 * practises
   * more common than array
-* `go run slices.go` & `go run slices-pointers.go` & `go run slice-literals.go` & `go run slice-bounds.go` & `go run slice-len-cap.go`
+* `go run slices.go` & `go run slices-pointers.go` & `go run slice-literals.go` & `go run slice-bounds.go` & `go run slice-len-cap.go` & `go run nil-slices.go` & `go run making-slices.go`
