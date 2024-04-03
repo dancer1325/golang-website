@@ -17,4 +17,8 @@ func main() {
 	// can NOT be resized		-- Uncomment next line --
 	//primes[9] = 111
 	fmt.Println(primes)
+
+	// array literal
+	var arrayLiteral = [3]bool{true, true, false}
+	fmt.Println(arrayLiteral)
 }
