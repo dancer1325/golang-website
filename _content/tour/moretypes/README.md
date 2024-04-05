@@ -69,3 +69,16 @@
 * practises
   * more common than array
 * `go run slices.go` & `go run slices-pointers.go` & `go run slice-literals.go` & `go run slice-bounds.go` & `go run slice-len-cap.go` & `go run nil-slices.go` & `go run making-slices.go` & `go run slices-of-slice.go` & `go run append.go`
+
+# Range form of for loop
+* `for first, second range sliceOrMap {…}`
+  * `first`
+    * `_` == skip it
+  * `second`
+    * ways to skip it
+      * `_`
+      * NOT specifying it directly
+  * if you iterate over a slice → 
+    * `first` == slice item’s position 
+    * `second` == copy of the slice item’s value
+* `go run range.go` & `go run range-continued.go`
