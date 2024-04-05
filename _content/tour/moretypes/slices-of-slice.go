@@ -1,15 +1,16 @@
+//go:build OMIT
 // +build OMIT
 
 package main
 
-import (
-	"fmt"
-	"strings"
-)
-
+/*
+*
+Create a tic-tac-toe board.
+*/
 func main() {
-	// Create a tic-tac-toe board.
+	// [][]string		-- slice of slices --
 	board := [][]string{
+		// slice literals		-- passes the items values directly
 		[]string{"_", "_", "_"},
 		[]string{"_", "_", "_"},
 		[]string{"_", "_", "_"},

@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -22,5 +23,6 @@ func main() {
 }
 
 func printSlice(s []int) {
+	// capacity also is increased
 	fmt.Printf("len=%d cap=%d %v\n", len(s), cap(s), s)
 }

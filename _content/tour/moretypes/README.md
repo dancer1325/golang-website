@@ -51,6 +51,7 @@
   * slice of values of type `T`
   * 0 is the first element
   * length of the slice — `len(sliceVariable)` —
+  * `[][]T` — slices of slices — 
 * ways to create slices 
   * `[lowestIndex:highestIndex]`
     * == [lowestIndex, highestIndex)
@@ -64,6 +65,7 @@
 * `[]T {fieldsPassingValues}` — slice literals —
   * create a new slice value / passes the items values directly
 * zero values is `nil`
+* `append()`
 * practises
   * more common than array
-* `go run slices.go` & `go run slices-pointers.go` & `go run slice-literals.go` & `go run slice-bounds.go` & `go run slice-len-cap.go` & `go run nil-slices.go` & `go run making-slices.go`
+* `go run slices.go` & `go run slices-pointers.go` & `go run slice-literals.go` & `go run slice-bounds.go` & `go run slice-len-cap.go` & `go run nil-slices.go` & `go run making-slices.go` & `go run slices-of-slice.go` & `go run append.go`
