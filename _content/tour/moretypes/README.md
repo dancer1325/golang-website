@@ -82,3 +82,16 @@
     * `first` == slice item’s position 
     * `second` == copy of the slice item’s value
 * `go run range.go` & `go run range-continued.go`
+
+# `map[keyType]valueType`
+* keys — are mapped to → values
+* zero values is `nil`
+  * NOT keys
+    * have
+    * can be added
+* was to create maps
+  * `make(map[keyType]valueType)`
+  * `map[keyType]valueType{…}` — map literals —
+    * 👁️if the top level type is type name → you can omit it 👁️
+* `map[keyValue]` returns if it exists the corresponding value
+* `go run maps.go` & `go run map-literals.go` & `go run map-literals-continued.go`

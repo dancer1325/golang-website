@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -8,6 +9,7 @@ type Vertex struct {
 	Lat, Long float64
 }
 
+// map[keyType]valueType{…} 			— map literals —
 var m = map[string]Vertex{
 	"Bell Labs": Vertex{
 		40.68433, -74.39967,
