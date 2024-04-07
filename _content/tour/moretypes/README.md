@@ -93,5 +93,13 @@
   * `make(map[keyType]valueType)`
   * `map[keyType]valueType{…}` — map literals —
     * 👁️if the top level type is type name → you can omit it 👁️
-* `map[keyValue]` returns if it exists the corresponding value
-* `go run maps.go` & `go run map-literals.go` & `go run map-literals-continued.go`
+* ways to mutate maps
+  * `mapVariable[key] = adjustOrInsertValue`
+  * `value, booleanIfExistKey = map[keyToRetrieveValue]` /  `value, booleanIfExistKey := mapVariable[keyToRetrieveValue]`
+    * `booleanIfExistKey` optional
+    * if key does NOT exist →
+      * `value` is zero value of `valueType`
+      * `booleanIfExistKey` is `false`
+    * `:=` for short declaration
+    * `delete(mapVariable,keyToBeDeleted)`
+* `go run maps.go` & `go run map-literals.go` & `go run map-literals-continued.go` & `go run mutating-maps.go`
