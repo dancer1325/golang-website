@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -7,6 +8,7 @@ import (
 	"math"
 )
 
+// pass functions as function's argument
 func compute(fn func(float64, float64) float64) float64 {
 	return fn(3, 4)
 }

@@ -1,11 +1,14 @@
+//go:build OMIT
 // +build OMIT
 
 package main
 
 import "fmt"
 
+// func(int) int		is all the returned function value
 func adder() func(int) int {
 	sum := 0
+	// sum is outside its body -- function closure --
 	return func(x int) int {
 		sum += x
 		return sum

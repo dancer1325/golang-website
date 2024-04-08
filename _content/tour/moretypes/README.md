@@ -103,3 +103,14 @@
     * `:=` for short declaration
     * `delete(mapVariable,keyToBeDeleted)`
 * `go run maps.go` & `go run map-literals.go` & `go run map-literals-continued.go` & `go run mutating-maps.go`
+
+# Functions
+* Check '../basics'
+* function values
+  * == 👁️ can be passed as other values 👁️
+    * ==
+      * function’s arguments
+      * function’s return values
+* function closures
+  * := function value / — refers variable from — outside its body
+* `go run function-values.go` & `go run function-closures.go`
