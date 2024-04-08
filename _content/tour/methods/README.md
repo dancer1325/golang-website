@@ -1,9 +1,26 @@
 # Methods
 * NOT classes
-* methods on types can be defined
-* := function with special receiver argument
+* == methods on types
   * `func receiver methodName.. {}`
-* `go run methods.go`
+    * receiver can be
+      * type
+        * ⚠️ receiver into the method is a copy → outside the method is NOT modified ⚠️
+        * ⚠️ Either value or pointer is valid ⚠️
+      * pointer
+        * Reasons to use it:
+          * receiver must be changed
+          * avoid copying the value / each method call
+        * ⚠️ Either value or pointer is valid ⚠️
+* == function with special receiver argument
+* `go run methods.go` & `go run methods-funcs.go` & `go run methods-continued.go` & `go run methods-pointers.go` & `go run indirection.go` & `go run indirection-values.go` 
+
+# Functions
+* ‘s arguments can be
+  * type
+  * pointer
+    * ⚠️ argument into the function is a copy → outside the function is NOT modified  ⚠️
+    * ⚠️ JUST pointers are accepted ⚠️
+* `go run methods-pointers-explained.go` & `go run indirection.go` & `go run indirection-values.go`
 
 # TODO:
 

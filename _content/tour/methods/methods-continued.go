@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -9,6 +10,7 @@ import (
 
 type MyFloat float64
 
+// Methods applied to non-struct type
 func (f MyFloat) Abs() float64 {
 	if f < 0 {
 		return float64(-f)
