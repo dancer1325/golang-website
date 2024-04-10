@@ -50,16 +50,22 @@
 * `go run empty-interface.go`
 
 # `:= interfaceName.(underlyingInterfaceValueType)` -- Type assertions --
-* `:= interfaceName.(underlyingInterfaceValueType)`
-  * syntax
-  * returns `interfaceValue’svalue, boolean`
-    * syntax == mutating maps
-    * boolean is optional
-    * if you pass wrong interface value’s type &
-      * boolean passed to return → boolean is false & NOT panic occurs
-      * NOT boolean passed to return → panic occurs
+* returns `interfaceValue’svalue, boolean`
+  * syntax == mutating maps
+  * boolean is optional
+  * if you pass wrong interface value’s type &
+    * boolean passed to return → boolean is false & NOT panic occurs
+    * NOT boolean passed to return → panic occurs
 * allows
   * getting access to interface value's value
 * `go run type-assertions.go`
+
+# `switch initStatement := interfaceName.(type) { case type1: … case type2: ... default: ...}` — type switches —
+* `interfaceName.(type)` == type assertion BUT `type` is a keyword
+* == switch statement BUT specifying types (NOT values)
+* if there is NO match with any case == `default` → initStatement’s type is `type`
+* allows
+  * several type assertions in series
+* `go run type-switches.go`
 
 # TODO:

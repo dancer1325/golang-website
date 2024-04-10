@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -5,8 +6,9 @@ package main
 import "fmt"
 
 func do(i interface{}) {
-	switch v := i.(type) {
-	case int:
+	// switch initStatement := interfaceName.(type) { case .... }
+	switch v := i.(type) { // type is a keyword
+	case int: // types are specified here
 		fmt.Printf("Twice %v is %v\n", v, v*2)
 	case string:
 		fmt.Printf("%q is %v bytes long\n", v, len(v))
@@ -18,5 +20,5 @@ func do(i interface{}) {
 func main() {
 	do(21)
 	do("hello")
-	do(true)
+	do(true) // default case == v is of type bool
 }
