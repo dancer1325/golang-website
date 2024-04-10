@@ -90,4 +90,10 @@
   * many implementations by standard library
 * `go run reader.go` & `go get golang.org/x/tour/reader` & `go run exercise-reader.go`
 
+# Image
+* := built-in package in standard library which
+  * includes
+    * `type Image interface {...}`
+* `go run images.go` & `go run exercise-images.go`
+
 # TODO:
