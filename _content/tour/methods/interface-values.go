@@ -33,7 +33,7 @@ func main() {
 
 	i = &T{"Hello"} // NO error, because *T implements I's method
 	describe(i)
-	i.M()
+	i.M() // TODO: i is JUST interface's value? -> we are calling interface value's method
 
 	i = F(math.Pi) // NO error, because F implements I's method
 	describe(i)

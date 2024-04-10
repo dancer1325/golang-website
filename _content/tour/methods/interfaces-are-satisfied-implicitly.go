@@ -1,8 +1,7 @@
+//go:build OMIT
 // +build OMIT
 
 package main
-
-import "fmt"
 
 type I interface {
 	M()
@@ -12,10 +11,11 @@ type T struct {
 	S string
 }
 
-// This method means type T implements the interface I,
-// but we don't need to explicitly declare that it does so.
+// Method on type T -> type T implements the interface I
+// NOT need to explicitly declare that it does so
 func (t T) M() {
-	fmt.Println(t.S)
+	// body of the method can be delegated to another package
+	//fmt.Println(t.S)
 }
 
 func main() {

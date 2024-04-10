@@ -1,4 +1,5 @@
-// +build no-run OMIT
+//go:build ignore || OMIT
+// +build ignore OMIT
 
 package main
 
@@ -9,11 +10,14 @@ type I interface {
 }
 
 func main() {
+	// nil interface
 	var i I
-	describe(i)
-	i.M()
+	describe(i) // either value or type are nil
+	i.M()       // NP in runtime
 }
 
 func describe(i I) {
+	//  %v	-- value
+	//  %T	-- type
 	fmt.Printf("(%v, %T)\n", i, i)
 }

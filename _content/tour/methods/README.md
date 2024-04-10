@@ -22,18 +22,24 @@
     * ⚠️ JUST pointers are accepted ⚠️
 * `go run methods-pointers-explained.go` & `go run indirection.go` & `go run indirection-values.go`
 
-# TODO:
-
 # `type interfaceName interface` -- interface type --
 * := set of method signatures
 * ⚠️ if a variable implements interface’s methods → that interface type can hold it ⚠️
   * 🧠 although at run time the value stored in the interface variable could change type, statically it’s typed 🧠
-* `go run intefaces.go`
+* ⚠️ if a type implements interface’s methods → that interface is implemented ⚠️
+  * NOT `implements` keyword exist
+  * 👁️ implicit implementation 👁️
+    * == implementation can be delegated to another package
+* `go run intefaces.go` & `go run interfaces-are-satisfied-implictly.go`
 
 # interface values
 * == `(value, type)`
 * if you call an interface value’s method → underlying `type`'s method (with same name) is executed
-* `go run interface-values.go`
+* if the `value` is nil → method called with a nil receiver ⚠️ WITHOUT triggering null pointer ⚠️
+* nil interface
+  * NOT hold `value` NOR `type`
+  * if you call a method → Null Pointer error in runtime
+* `go run interface-values.go` & `go run interface-values-with-nil.go` & `go run nil-interface-values.go`
 
 # `interface{}` -- empty interface - 
 * := `interface` / NO methods
