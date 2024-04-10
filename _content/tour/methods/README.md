@@ -95,5 +95,3 @@
   * includes
     * `type Image interface {...}`
 * `go run images.go` & `go run exercise-images.go`
-
-# TODO:
