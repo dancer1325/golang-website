@@ -75,4 +75,11 @@
   * fmt
 * `go run stringer.go` & `go run exercise-stringer.go`
 
+# `type error interface { Error() string }` — Errors -- 
+* := built-in interface
+* uses
+  * express error state
+  * returned by most of the functions
+* `go run errors.go`
+
 # TODO:
