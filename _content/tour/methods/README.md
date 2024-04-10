@@ -82,4 +82,12 @@
   * returned by most of the functions
 * `go run errors.go`
 
+# `io.Reader` — Readers —
+* := stream data’s read end with
+  * `func (T) Read(b []byte) (n int, err error)`
+    * `n int` returns the # of bytes populated
+* uses
+  * many implementations by standard library
+* `go run reader.go` & `go get golang.org/x/tour/reader` & `go run exercise-reader.go`
+
 # TODO:
