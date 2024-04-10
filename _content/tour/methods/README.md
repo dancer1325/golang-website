@@ -68,4 +68,11 @@
   * several type assertions in series
 * `go run type-switches.go`
 
+# `type Stringer interface { String() string }` — Stringer —
+* := interface type which
+  * — can be described itself as — string
+* uses
+  * fmt
+* `go run stringer.go` & `go run exercise-stringer.go`
+
 # TODO:

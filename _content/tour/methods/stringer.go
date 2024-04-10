@@ -1,9 +1,11 @@
+//go:build OMIT
 // +build OMIT
 
 package main
 
 import "fmt"
 
+// Person is a Stringer struct, because it has got a method describing itself
 type Person struct {
 	Name string
 	Age  int
