@@ -9,3 +9,6 @@
         * `==`
         * `!=`
 * `go run index.go`
+
+# `type structName[typeParameters] struct { fields }` — generic types —
+* `go run list.go`
