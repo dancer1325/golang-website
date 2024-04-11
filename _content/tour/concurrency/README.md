@@ -16,3 +16,11 @@
 * uses
   * sync goroutines without explicit locks OR condition variables -- run several times the next command, to check random different order printing the new goroutines-- 
 * `go run channels.go`
+
+# buffered channels
+* Check previous section
+  * 👁️previous to send values the channel ALL channel must be fulfilled 👁️
+  * 👁️ONCE you read the values from the channel → channel is empty👁️
+* ways to create them
+  * `make(chan TypesToSenViaTheChannel, bufferLength)`
+* `go run buffered-channels.go`
