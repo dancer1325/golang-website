@@ -1,9 +1,11 @@
-// +build no-build OMIT
+//go:build ignore || OMIT
+// +build ignore OMIT
 
 package main
 
 import "golang.org/x/tour/tree"
 
+// TODO: Do it
 // Walk walks the tree t sending all values
 // from the tree to the channel ch.
 func Walk(t *tree.Tree, ch chan int)
