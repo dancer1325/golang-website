@@ -13,6 +13,9 @@
     * if there is NO other case ready → it’s run 👁️ NO blocking 👁️
 * `go run goroutines.go` & `go run select.go` & `go run default-selection.go`
 
+# sync
+* Check golang repo under '../sync/mutex'
+
 # `chan` — channel —
 * := typed conduit which
   * `channelVariable <- valueToSend`
