@@ -8,17 +8,30 @@
 
 # `chan` — channel —
 * := typed conduit which
-  * receive valueS the channel -- via `channelVariable <- valueToSend`
-  * send valueS the channel -- via `assignToAVariable <- channelVariable`
+  * `channelVariable <- valueToSend`
+    * the channel receive valueS
+  * `assignToAVariable, boolVariable <- channelVariable`
+    * the channel send valueS 
     * 👁️the goroutine with this statement waits for receiving it 👁️
+    * `boolVariable`
+      * if `true` == channel can send more values
+      * if `false` == channel is closed == NO more values will be sent
 * ways to create them
   * `make(chan TypesToSenViaTheChannel)`
 * uses
-  * sync goroutines without explicit locks OR condition variables -- run several times the next command, to check random different order printing the new goroutines-- 
-* `go run channels.go`
+  * sync goroutines without explicit locks OR condition variables -- run several times the next command, to check random different order printing the new goroutines--
+* `close(channelVariable)`
+  * == close the channel == NO more values will be sent
+  * 👁️ JUST the sender should close the channel 👁️
+  * ⚠️ if you send values to a closed channel → panic will be thrown ⚠️
+  * uses
+    * 👁️ receiver must be told that NO more expected values 👁️ -- Example: `range` --
+* `for variableDeclaration := range channelVariable {…}`
+  * infinite loop till channel is closed
+* `go run channels.go` & `go run range-and-close.go`
 
 # buffered channels
-* Check previous section
+* := channel with a defined length
   * 👁️previous to send values the channel ALL channel must be fulfilled 👁️
   * 👁️ONCE you read the values from the channel → channel is empty👁️
 * ways to create them
