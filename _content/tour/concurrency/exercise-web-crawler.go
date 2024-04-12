@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -6,6 +7,7 @@ import (
 	"fmt"
 )
 
+// TODO: Do it
 type Fetcher interface {
 	// Fetch returns the body of URL and
 	// a slice of URLs found on that page.
