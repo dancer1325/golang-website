@@ -4,7 +4,14 @@
     * → access to shared memory — must be — synchronized
 * `argumentsToPass` are evaluated in the 👁️ current 👁️ goroutine
 * `function(argumentsToPass)` is executed in the 👁️ NEW goroutine 👁️
-* `go run goroutines.go`
+* `for { select { case1: .. case2: .. }}`
+  * `select` allows
+    * ⚠️ blocking the goroutine till 1 of the cases can run ⚠️
+      * == wait on multiple operations
+      * if multiple are ready → 👁️ choose 1 randomly 👁️
+  * `default`
+    * if there is NO other case ready → it’s run 👁️ NO blocking 👁️
+* `go run goroutines.go` & `go run select.go` & `go run default-selection.go`
 
 # `chan` — channel —
 * := typed conduit which

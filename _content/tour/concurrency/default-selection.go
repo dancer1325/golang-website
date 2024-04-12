@@ -1,3 +1,4 @@
+//go:build OMIT
 // +build OMIT
 
 package main
@@ -10,6 +11,8 @@ import (
 func main() {
 	tick := time.Tick(100 * time.Millisecond)
 	boom := time.After(500 * time.Millisecond)
+
+	// for { select { case1: .. case2: .. default: ...}}
 	for {
 		select {
 		case <-tick:
