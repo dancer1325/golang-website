@@ -2,6 +2,9 @@
 // encoded strings, beyond what is provided in the standard "strings" package.
 package main
 
+// Note: NOT work based on file level position
+//const visibleRestPackageFiles = true
+
 // ReverseRunes returns its argument string reversed rune-wise left to right.
 func ReverseRunes(s string) string {
 	r := []rune(s)
@@ -10,3 +13,8 @@ func ReverseRunes(s string) string {
 	}
 	return string(r)
 }
+
+//const visibleRestPackageFiles = true
+
+// also valid defining with capital as first letter
+//const VisibleRestPackageFiles = true
