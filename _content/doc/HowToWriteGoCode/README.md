@@ -41,8 +41,19 @@
         * Attempt2: Open .bash_profile and switch to ''
         * Solution: TODO: 
   * else → binary is installed under '$HOME/go/bin'
-
-# TODO:
+## Import packages from your module
+* Create the subdirectory '/morestrings' & add a file
+* `cd morestrings` & `go build`
+  * compiled package is saved in the local build cache
+    * Problems: Where to find it?
+      * Attempt1: `go env` & check GOCACHE & `cd $GOCACHE` 
+      * Attempt2: `go env` & check GOCACHE & `cd $GOMODCACHE`
+      * Solution: TODO:
+* Package name can be used & install it -- `go install example/user/hello`
+* `hello` runs the binary
+  * Notes: Where is it placed ? -- TODO:
+## Import packages from remote modules
+* TODO:
 
 # Testing
 * lightweight test framework

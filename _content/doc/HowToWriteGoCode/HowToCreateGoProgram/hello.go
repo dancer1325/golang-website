@@ -4,8 +4,13 @@
 // To have executable commands
 package main
 
-import "fmt"
+import (
+	"example/user/hello/morestrings" // ModName/PackageName
+	"fmt"
+)
 
 func main() {
 	fmt.Println("Hello, world.")
+
+	fmt.Println(morestrings.ReverseRunes("!oG ,olleH"))
 }
