@@ -24,6 +24,24 @@
       * 👁️ @Standard Library ‘s packages do NOT contain the prefix 👁️
     * → indicates where to download it
 
+# How to create a Go program?
+* `mkdir HowToCreateGoProgram` 
+* `go mod init example/user/hello` creates  the 'go.mod'
+* Create a .go file
+  * `package NameOfThePackage` — first statement —
+    * `package main` — if you want executable commands —
+* `go install NameOfTheModuleToCreate` — build & install the Go program — 
+  * 👁️ == install a binary 👁️
+  * if `GOBIN` is set → binary is installed under `GOBIN`
+    * `go env` to print the Go environment variables
+  * if `GOPATH` is set → binary is installed under `GOPATH`’s entry /bin
+    * Problems
+      * Problem1: Set -- GOPATH='/Users/dancer13/Library/Caches/go-build' -- but no bin found there
+        * Attempt1: `go env -u GOPATH`
+        * Attempt2: Open .bash_profile and switch to ''
+        * Solution: TODO: 
+  * else → binary is installed under '$HOME/go/bin'
+
 # TODO:
 
 # Testing
