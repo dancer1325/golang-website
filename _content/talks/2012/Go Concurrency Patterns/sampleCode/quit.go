@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -9,12 +10,14 @@ import (
 )
 
 func main() {
-// START1 OMIT
+	// START1 OMIT
 	quit := make(chan bool) // HL
 	c := boring("Joe", quit)
-	for i := rand.Intn(10); i >= 0; i-- { fmt.Println(<-c) }
+	for i := rand.Intn(10); i >= 0; i-- {
+		fmt.Println(<-c)
+	}
 	quit <- true // HL
-// STOP1 OMIT
+	// STOP1 OMIT
 }
 
 func boring(msg string, quit <-chan bool) <-chan string {
@@ -22,14 +25,14 @@ func boring(msg string, quit <-chan bool) <-chan string {
 	go func() { // HL
 		for i := 0; ; i++ {
 			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
-// START2 OMIT
+			// START2 OMIT
 			select {
 			case c <- fmt.Sprintf("%s: %d", msg, i):
 				// do nothing
 			case <-quit: // HL
 				return
 			}
-// STOP2 OMIT
+			// STOP2 OMIT
 		}
 	}()
 	return c

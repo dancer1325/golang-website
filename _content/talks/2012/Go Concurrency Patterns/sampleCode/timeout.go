@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -21,6 +22,7 @@ func main() {
 		}
 	}
 }
+
 // STOP1 OMIT
 
 // START2 OMIT
@@ -34,8 +36,8 @@ func boring(msg string) <-chan string { // Returns receive-only channel of strin
 	}()
 	return c // Return the channel to the caller. // HL
 }
-// STOP2 OMIT
 
+// STOP2 OMIT
 
 // START3 OMIT
 func fanIn(input1, input2 <-chan string) <-chan string { // HL
@@ -52,4 +54,5 @@ func fanIn(input1, input2 <-chan string) <-chan string { // HL
 	}()
 	return c
 }
+
 // STOP3 OMIT

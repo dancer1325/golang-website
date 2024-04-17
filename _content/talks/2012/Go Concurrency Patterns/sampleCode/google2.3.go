@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -20,6 +21,7 @@ func First(query string, replicas ...Search) Result {
 	}
 	return <-c
 }
+
 // STOP1 OMIT
 
 // START2 OMIT
@@ -33,12 +35,12 @@ func main() {
 	fmt.Println(result)
 	fmt.Println(elapsed)
 }
+
 // STOP2 OMIT
 
 func fakeSearch(kind string) Search {
-        return func(query string) Result {
-	          time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
-	          return Result(fmt.Sprintf("%s result for %q\n", kind, query))
-        }
+	return func(query string) Result {
+		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		return Result(fmt.Sprintf("%s result for %q\n", kind, query))
+	}
 }
-

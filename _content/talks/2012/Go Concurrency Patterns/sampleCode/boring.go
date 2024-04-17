@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -18,4 +19,5 @@ func boring(msg string) {
 		time.Sleep(time.Second)
 	}
 }
+
 // STOP OMIT

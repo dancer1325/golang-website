@@ -1,4 +1,4 @@
-
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -18,11 +18,12 @@ func Google(query string) (results []Result) {
 	results = append(results, Video(query))
 	return
 }
+
 // STOP1 OMIT
 
 // START2 OMIT
 var (
-	Web = fakeSearch("web")
+	Web   = fakeSearch("web")
 	Image = fakeSearch("image")
 	Video = fakeSearch("video")
 )
@@ -30,11 +31,12 @@ var (
 type Search func(query string) Result // HL
 
 func fakeSearch(kind string) Search {
-        return func(query string) Result {
-	          time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
-	          return Result(fmt.Sprintf("%s result for %q\n", kind, query))
-        }
+	return func(query string) Result {
+		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		return Result(fmt.Sprintf("%s result for %q\n", kind, query))
+	}
 }
+
 // STOP2 OMIT
 
 func main() {

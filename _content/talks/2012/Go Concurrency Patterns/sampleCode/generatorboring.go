@@ -1,3 +1,4 @@
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -9,13 +10,13 @@ import (
 )
 
 func main() {
-// START1 OMIT
+	// START1 OMIT
 	c := boring("boring!") // Function returning a channel. // HL
 	for i := 0; i < 5; i++ {
 		fmt.Printf("You say: %q\n", <-c)
 	}
 	fmt.Println("You're boring; I'm leaving.")
-// STOP1 OMIT
+	// STOP1 OMIT
 }
 
 // START2 OMIT
@@ -29,5 +30,5 @@ func boring(msg string) <-chan string { // Returns receive-only channel of strin
 	}()
 	return c // Return the channel to the caller. // HL
 }
-// STOP2 OMIT
 
+// STOP2 OMIT

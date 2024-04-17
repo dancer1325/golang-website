@@ -1,5 +1,4 @@
-
-
+//go:build ignore && OMIT
 // +build ignore,OMIT
 
 package main
@@ -14,8 +13,8 @@ type Result string
 type Search func(query string) Result
 
 var (
-	Web1 = fakeSearch("web1")
-        Web2 = fakeSearch("web2")
+	Web1   = fakeSearch("web1")
+	Web2   = fakeSearch("web2")
 	Image1 = fakeSearch("image1")
 	Image2 = fakeSearch("image2")
 	Video1 = fakeSearch("video1")
@@ -23,11 +22,11 @@ var (
 )
 
 func Google(query string) (results []Result) {
-// START OMIT
+	// START OMIT
 	c := make(chan Result)
-	go func() { c <- First(query, Web1, Web2) } ()
-	go func() { c <- First(query, Image1, Image2) } ()
-	go func() { c <- First(query, Video1, Video2) } ()
+	go func() { c <- First(query, Web1, Web2) }()
+	go func() { c <- First(query, Image1, Image2) }()
+	go func() { c <- First(query, Video1, Video2) }()
 	timeout := time.After(80 * time.Millisecond)
 	for i := 0; i < 3; i++ {
 		select {
@@ -39,7 +38,7 @@ func Google(query string) (results []Result) {
 		}
 	}
 	return
-// STOP OMIT
+	// STOP OMIT
 }
 
 func First(query string, replicas ...Search) Result {
@@ -50,14 +49,14 @@ func First(query string, replicas ...Search) Result {
 	for i := range replicas {
 		go searchReplica(i)
 	}
-        return <-c
+	return <-c
 }
 
 func fakeSearch(kind string) Search {
-        return func(query string) Result {
-	          time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
-	          return Result(fmt.Sprintf("%s result for %q\n", kind, query))
-        }
+	return func(query string) Result {
+		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+		return Result(fmt.Sprintf("%s result for %q\n", kind, query))
+	}
 }
 
 func main() {
