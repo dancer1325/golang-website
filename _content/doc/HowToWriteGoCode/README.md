@@ -53,7 +53,8 @@
 * `hello` runs the binary
   * Notes: Where is it placed ? -- TODO:
 ## Import packages from remote modules
-* TODO:
+* Add as common 'import' and by default it uses the 
+* `go mod tidy` -- download & record & remove missing modules --
 
 # Testing
 * lightweight test framework
