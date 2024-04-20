@@ -4,7 +4,7 @@
 
 //go:build ignore
 
-package main
+package Writing_Web_Applications
 
 import (
 	"fmt"
