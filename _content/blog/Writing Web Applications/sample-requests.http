@@ -7,8 +7,14 @@ GET {{host}}/Alfred
 ### part2
 GET {{host}}/view/NameToLoadAndDisplay
 
-### part3 -- display the file == part2 --
+### notemplate -- display the file == part2 --
 GET {{host}}/view/NameToLoadAndDisplay
 
-### part3 -- form to adjust the file --
+### notemplate -- form to adjust the file --
+GET {{host}}/edit/NameToLoadAndDisplay
+
+### final-noerror -- display the file == part2 --
+GET {{host}}/view/NameToLoadAndDisplay
+
+### final-noerror -- form to adjust the file --
 GET {{host}}/edit/NameToLoadAndDisplay

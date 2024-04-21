@@ -39,5 +39,16 @@
           * Problem1: Why content of the file NOT updated after clicking in save button ?
             * Attempt1: `save`
             * Attempt2: `save()`
-            * Solution: TODO:
+            * Reason: There is NOT yet built handler for '/save/'
+
+# html/template
+* allows
+  * HTML file (_Example:_ 'edit.html') -- is separated from -- Go code
+    * '>'  -- is replaced by '&gt'
+      * Problems: How to add commentaries to the template 
+        * Solution: `{{/* Commentary */}}`
+* `go run final-noerror.go` OR `go build final-noerror.go` & `./final-noerror` + allowed pop up panel
+  * replace hardcoded HTML by path to them
+  * steps
+    * same as previous one
 
