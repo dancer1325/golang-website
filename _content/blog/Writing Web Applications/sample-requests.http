@@ -1,0 +1,7 @@
+### http-sample -- without url path --
+GET {{host}}
+
+### http-sample -- with url path --
+GET {{host}}/Alfred
+
+###

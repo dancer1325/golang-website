@@ -19,3 +19,8 @@
   * 'loadPage' handles the error
   * creates a file named 'TestPage.txt' in this directory
 
+# net/http
+* `go run http-sample.go` OR `go build http-sample.go` & `./http-sample` + allowed pop up pannel
+  * Open in your desired browser or trigger the curls
+    * 'localhost:8080'    -- response without url path --
+    * 'localhost:8080/Alfred'    -- response adding the url path 'Alfred' --
