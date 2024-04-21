@@ -6,3 +6,9 @@ GET {{host}}/Alfred
 
 ### part2
 GET {{host}}/view/NameToLoadAndDisplay
+
+### part3 -- display the file == part2 --
+GET {{host}}/view/NameToLoadAndDisplay
+
+### part3 -- form to adjust the file --
+GET {{host}}/edit/NameToLoadAndDisplay

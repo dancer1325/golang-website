@@ -29,4 +29,15 @@
     * create a file manually "NameToLoadAndDisplay.txt"
     * Open in your desired browser or trigger the curl
       * 'localhost:8080/view/NameToLoadAndDisplay'    -- content of the file is displayed!! --
+* `go run notemplate.go` OR `go build notemplate.go` & `./notemplate` + allowed pop up panel
+  * hardcoded HTML without templating 
+  * steps
+    * same as previous one
+    * Open in your desired browser or trigger the curl
+      * 'localhost:8080/edit/NameToLoadAndDisplay'    -- content of the file is displayed!! --
+        * Problems:
+          * Problem1: Why content of the file NOT updated after clicking in save button ?
+            * Attempt1: `save`
+            * Attempt2: `save()`
+            * Solution: TODO:
 
