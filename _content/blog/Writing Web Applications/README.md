@@ -1,0 +1,21 @@
+* https://go.dev/doc/articles/wiki/
+
+# Goal
+* create data structure with load and save methods
+* use
+  * 'net/http' -- for build -- web applications
+  * 'html/template' -- to process -- HTML templates
+  * 'regexp' -- to validate -- user input
+  * closures
+
+# Create data structure with load and save methods
+* `go run part1-noerror.go` OR `go build part1-noerror.go` & `./part1-noerror`
+  * 'loadPage' does NOT handle the error
+  * creates a file named 'TestPage.txt' in this directory
+  * Problems
+    * Problem1: "undefined: fmt"
+      * Solution: `import "fmt"`
+* `go run part1.go` OR `go build part1.go` & `./part1`
+  * 'loadPage' handles the error
+  * creates a file named 'TestPage.txt' in this directory
+

@@ -7,25 +7,28 @@
 package main
 
 import (
-	"html/template"
-	"log"
-	"net/http"
 	"os"
-	"regexp"
 )
 
 type Page struct {
 	Title string
-	Body  []byte
+	Body  []byte // []byte	because that's the type expected by 'io'
 }
 
+/*
+Method on *Page -- pointer to Page -- to store in a .txt the page's body
+error as returned	because that's the returned type by os.WriteFile(...)
+*/
 func (p *Page) save() error {
-	filename := p.Title + ".txt"
-	return os.WriteFile(filename, p.Body, 0600)
+	filename := p.Title + ".txt"                // short declaration
+	return os.WriteFile(filename, p.Body, 0600) // 0600	octal number in which read-write permissions for current user
 }
 
+/*
+*Page -- pointer -- is returned
+ */
 func loadPage(title string) (*Page, error) {
-	filename := title + ".txt"
+	filename := title + ".txt" // short declaration
 	body, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err

@@ -21,6 +21,9 @@ func (p *Page) save() error {
 	return os.WriteFile(filename, p.Body, 0600)
 }
 
+/*
+_	error NOT handled
+*/
 func loadPage(title string) *Page {
 	filename := title + ".txt"
 	body, _ := os.ReadFile(filename)
