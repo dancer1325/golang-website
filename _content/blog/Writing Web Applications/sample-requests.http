@@ -4,4 +4,5 @@ GET {{host}}
 ### http-sample -- with url path --
 GET {{host}}/Alfred
 
-###
+### part2
+GET {{host}}/view/NameToLoadAndDisplay

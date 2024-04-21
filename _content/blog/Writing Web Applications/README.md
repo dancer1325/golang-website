@@ -20,7 +20,13 @@
   * creates a file named 'TestPage.txt' in this directory
 
 # net/http
-* `go run http-sample.go` OR `go build http-sample.go` & `./http-sample` + allowed pop up pannel
+* `go run http-sample.go` OR `go build http-sample.go` & `./http-sample` + allowed pop up panel
   * Open in your desired browser or trigger the curls
     * 'localhost:8080'    -- response without url path --
     * 'localhost:8080/Alfred'    -- response adding the url path 'Alfred' --
+* `go run part2.go` OR `go build part2.go` & `./part2` + allowed pop up panel
+  * steps
+    * create a file manually "NameToLoadAndDisplay.txt"
+    * Open in your desired browser or trigger the curl
+      * 'localhost:8080/view/NameToLoadAndDisplay'    -- content of the file is displayed!! --
+

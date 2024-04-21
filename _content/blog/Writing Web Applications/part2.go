@@ -7,9 +7,6 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
 	"os"
 )
 
@@ -32,9 +29,12 @@ func loadPage(title string) (*Page, error) {
 	return &Page{Title: title, Body: body}, nil
 }
 
+/*
+handle url prefixed with "/view/"
+*/
 func viewHandler(w http.ResponseWriter, r *http.Request) {
 	title := r.URL.Path[len("/view/"):]
-	p, _ := loadPage(title)
+	p, _ := loadPage(title) // error ignored
 	fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.Title, p.Body)
 }
 
