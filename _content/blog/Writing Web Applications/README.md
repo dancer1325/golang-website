@@ -58,6 +58,7 @@
     * '>'  -- is replaced by '&gt'
       * Problems: How to add commentaries to the template 
         * Solution: `{{/* Commentary */}}`
+  * parsing files, which can be cached -- 'final.go' -- 
 * `go run final-noerror.go` OR `go build final-noerror.go` & `./final-noerror` + allowed pop up panel
   * replace hardcoded HTML by path to them
   * steps

@@ -7,7 +7,11 @@
 package main
 
 import (
+	"html/template"
+	"log"
+	"net/http"
 	"os"
+	"regexp"
 )
 
 type Page struct {
@@ -64,6 +68,8 @@ func saveHandler(w http.ResponseWriter, r *http.Request, title string) {
 	http.Redirect(w, r, "/view/"+title, http.StatusFound)
 }
 
+// At program initialization -> files are parsed != each time, it´s requested
+// template.Must		wrapping to be awared of some panic
 var templates = template.Must(template.ParseFiles("edit.html", "view.html"))
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
