@@ -40,6 +40,7 @@ func viewHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	p, err := loadPage(title)
+	// Uncomment next lines, because we are trying to force an error to observe the error handling behavior
 	if err != nil {
 		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
 		return
@@ -68,6 +69,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 	p := &Page{Title: title, Body: []byte(body)}
 	err = p.save()
 	if err != nil {
+		// handle the error
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -77,6 +79,7 @@ func saveHandler(w http.ResponseWriter, r *http.Request) {
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 	t, err := template.ParseFiles(tmpl + ".html")
 	if err != nil {
+		// handle the error
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}

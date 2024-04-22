@@ -44,6 +44,13 @@
   * save a .txt file the information passed via the form in '/edit/'
   * Open in your desired browser or trigger the curl
     * 'localhost:8080/edit/createdViaEditForm'    -- file created via edit form --
+* `go run final-noclosure.go` OR `go build final-noclosure.go` & `./final-noclosure` + allowed pop up panel
+  * `http.Error()` to handle errors
+  * Open in your desired browser or trigger the curl
+    * Problems: Which request OR how to force?
+      * Attempt1: Comment couple of lines in viewHandler
+      * Attempt2: Check [dlv](https://github.com/go-delve/delve/tree/master/Documentation/installation)
+      * Solution: TODO:
 
 # html/template
 * allows
