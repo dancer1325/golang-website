@@ -40,6 +40,10 @@
             * Attempt1: `save`
             * Attempt2: `save()`
             * Reason: There is NOT yet built handler for '/save/'
+* `go run final-template.go` OR `go build final-template.go` & `./final-template` + allowed pop up panel
+  * save a .txt file the information passed via the form in '/edit/'
+  * Open in your desired browser or trigger the curl
+    * 'localhost:8080/edit/createdViaEditForm'    -- file created via edit form --
 
 # html/template
 * allows

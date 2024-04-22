@@ -21,3 +21,6 @@ GET {{host}}/edit/NameToLoadAndDisplay
 
 ### part3-errorhandling -- visualize NO existing -- is redirected to /edit/
 GET {{host}}/view/NoExistingPage
+
+### final-template -- create a file via visiting /edit/* and redirect to /view/*
+GET {{host}}/edit/createdViaEditForm
