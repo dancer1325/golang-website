@@ -51,4 +51,8 @@
   * replace hardcoded HTML by path to them
   * steps
     * same as previous one
+* `go run part3-errorhandling.go` OR `go build part3-errorhandling.go` & `./part3-errorhandling` + allowed pop up panel
+  * if the page '/view/*' to visualize does NOT exist -> redirect to '/edit/*'
+  * Open in your desired browser or trigger the curl
+    * 'localhost:8080/view/NoExistingPage' -- is redirected to -> 'localhost:8080/edit/NoExistingPage' 
 
