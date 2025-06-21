@@ -68,13 +68,13 @@ Tigran Bayburtsyan, Co-Founder and CTO at Hexact Inc., summarizes five key reaso
       - text: Using Go in government
         url: https://technology.blog.gov.uk/2014/11/14/using-go-in-government/
   - company: Hugo
-    url: http://gohugo.io/
+    url: https://gohugo.io/
     logoSrc: hugo.svg
     logoSrcDark: hugo.svg
     desc: Hugo is a fast and modern website engine written in Go, and designed to make website creation fun again. Websites built with Hugo are extremely fast and secure and can be hosted anywhere without any dependencies.
     ctas:
       - text: Hugo
-        url: http://gohugo.io/
+        url: https://gohugo.io/
   - company: Mattermost
     url: https://mattermost.com/
     logoSrc: mattermost_light.svg
@@ -127,9 +127,6 @@ Tigran Bayburtsyan, Co-Founder and CTO at Hexact Inc., summarizes five key reaso
   - title: Web frameworks
     viewMoreUrl: https://pkg.go.dev/search?q=web+framework
     items:
-      - text: Buffalo
-        url: https://gobuffalo.io/en/
-        desc: A framework for rapid web development in Go, curating Go and JS libraries together.
       - text: Echo
         url: https://echo.labstack.com/
         desc: A high performance, extensible, and minimalist Go web framework
@@ -140,11 +137,14 @@ Tigran Bayburtsyan, Co-Founder and CTO at Hexact Inc., summarizes five key reaso
         url: https://gin-gonic.com/
         desc: A web framework written in Go, with a martini-like API.
       - text: Gorilla
-        url: http://www.gorillatoolkit.org/
+        url: https://www.gorillatoolkit.org/
         desc: A web toolkit for the Go programming language.
   - title: Routers
     viewMoreUrl: https://pkg.go.dev/search?q=http%20router
     items:
+      - text: net/http
+        url: https://pkg.go.dev/net/http
+        desc: A standard library HTTP package
       - text: julienschmidt/httprouter
         url: https://pkg.go.dev/github.com/julienschmidt/httprouter?tab=overview
         desc: A lightweight high performance HTTP request router
@@ -154,9 +154,6 @@ Tigran Bayburtsyan, Co-Founder and CTO at Hexact Inc., summarizes five key reaso
       - text: Chi
         url: https://pkg.go.dev/github.com/go-chi/chi?tab=overview
         desc: A lightweight, idiomatic and composable router for building Go HTTP services.
-      - text: net/http
-        url: https://pkg.go.dev/net/http
-        desc: A standard library HTTP package
   - title: Template Engines
     viewMoreUrl: https://pkg.go.dev/search?q=templates
     items:
@@ -182,7 +179,7 @@ Tigran Bayburtsyan, Co-Founder and CTO at Hexact Inc., summarizes five key reaso
         url: https://gorm.io/
         desc: An ORM library for Go
       - text: Bleve
-        url: http://blevesearch.com/
+        url: https://blevesearch.com/
         desc: Full-text search and indexing for Go
       - text: CockroachDB
         url: https://www.cockroachlabs.com/

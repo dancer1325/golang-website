@@ -5,6 +5,22 @@ breadcrumb: true
 date: 2024-02-07:00:00Z
 ---
 
+<style>
+.DocInfo {
+  background-color: var(--color-background-info);
+  padding: 1.5rem 2rem 1.5rem 4rem;
+  border-left: 0.875rem solid var(--color-border);
+  position: relative;
+}
+.DocInfo:before {
+  content: "ⓘ";
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 2rem;
+}
+</style>
+
 Table of Contents:
 
  [Background](#background)\
@@ -13,6 +29,7 @@ Table of Contents:
  [Counters](#counters)\
  [Reporting and Uploading](#reports)\
  [Charts](#charts) \
+ [Telemetry Proposals](#proposals)\
  [IDE Prompting](#ide) \
  [Frequently Asked Questions](#faq)
 
@@ -21,8 +38,9 @@ Table of Contents:
 Go telemetry is a way for Go toolchain programs to collect data about their
 performance and usage. Here "Go toolchain" means developer tools maintained
 by the Go team, including the `go` command and supplemental tools such as the
-Go language server `gopls` or Go security tool `govulncheck`. Go telemetry is
-only intended for use in programs maintained by the Go team.
+Go language server [`gopls`] or Go security tool [`govulncheck`]. Go telemetry is
+only intended for use in programs maintained by the Go team and their selected
+dependencies like [Delve].
 
 By default, telemetry data is kept only on the local computer, but users may
 opt in to uploading an approved subset of telemetry data to [telemetry.go.dev].
@@ -44,6 +62,25 @@ To learn more about telemetry and privacy, please see the
 
 This page explains how Go telemetry works, in some detail. For quick answers to
 frequently asked questions, see the [FAQ](#faq).
+
+<div class="DocInfo">
+Using Go 1.23 or later, to <strong>opt in</strong> to uploading telemetry data
+to the Go team, run:
+<pre>
+go telemetry on
+</pre>
+To completely disable telemetry, including local collection, run:
+<pre>
+go telemetry off
+</pre>
+To revert to the default mode of local-only telemetry, run:
+<pre>
+go telemetry local
+</pre>
+Prior to Go 1.23, this can also be done with the
+<code>golang.org/x/telemetry/cmd/gotelemetry</code> command. See <a
+href="#config">Configuration</a> for more details.
+</div>
 
 ## Overview {#overview}
 
@@ -87,25 +124,30 @@ _mode_. The possible values for `mode` are `local` (the default), `on`, or
   [sampling](#uploads).
 - When `mode` is `off`, data is neither collected nor uploaded.
 
-The [`gotelemetry`](/pkg/golang.org/x/telemetry/cmd/gotelemetry) command
-configures the telemetry mode and manages local telemetry data. Use this
-command to install it:
+With Go 1.23 or later, the following commands interact with the telemetry mode:
+
+- `go telemetry`: see the current mode.
+- `go telemetry on`: set the mode to `on`.
+- `go telemetry off`: set the mode to `off`.
+- `go telemetry local`: set the mode to `local`.
+
+Information about telemetry configuration is also available via read-only Go
+environment variables:
+
+- `go env GOTELEMETRY` reports the telemetry mode.
+- `go env GOTELEMETRYDIR` reports the directory holding telemetry configuration
+  and data.
+
+The [`gotelemetry`](/pkg/golang.org/x/telemetry/cmd/gotelemetry) command can
+also be used to configure the telemetry mode, as well as to inspect local
+telemetry data. Use this command to install it:
 
 ```
 go install golang.org/x/telemetry/cmd/gotelemetry@latest
 ```
 
-The following commands interact with the telemetry mode:
-
-- `gotelemetry local`: set the mode to `local`.
-- `gotelemetry on`: set the mode to `on`.
-- `gotelemetry off`: set the mode to `off`.
-- `gotelemetry env`: see the current mode.
-
 For the complete usage information of the `gotelemetry` command line tool,
 see its [package documentation](/pkg/golang.org/x/telemetry/cmd/gotelemetry).
-
-Telemetry may also be enabled by accepting an [IDE prompt](#ide).
 
 ## Counters {#counters}
 
@@ -230,39 +272,6 @@ Once enough users opt in to uploading telemetry data, the upload process will
 randomly skip uploading for a fraction of reports, to reduce collection amounts
 and increase privacy while maintaining statistical significance.
 
-### The telemetry proposal process {#proposals}
-
-Counters may be added to the upload configuration only through the _telemetry
-proposal process_, which proceeds as follows:
-
-1. The proposer files a [proposal] to upload new data. This is expressed in the
-   form of a specific [chart](#charts) that will be displayed on
-   [telemetry.go.dev].
-2. Once discussion on the issue resolves, the proposal is approved or declined
-   by a member of the Go team.
-3. The proposer sends a CL modifying the internal
-   [chart config](https://go.googlesource.com/telemetry/+/refs/heads/master/internal/chartconfig/config.txt)
-   to include the new chart.
-4. An automatic process regenerates the upload config to allow uploading of the
-   counters required for the new chart. This process will also regularly add
-   new versions of the relevant programs to the upload config as they are
-   released.
-
-In order to be approved, new charts cannot carry sensitive user information,
-and additionally must be both useful and feasible. In order to be _useful_,
-charts must serve a specific purpose, with actionable outcomes, that can't be
-served by other means. For example, in order to collect a counter that measures
-the latency of a given operation, it must be shown that this latency can't
-reasonably be measured via benchmarking, and that knowing the latency
-distribution will help meaningfully improve future versions of the program in
-question. In order to be _feasible_, it must be possible to reliably collect
-the requisite data, and the resulting measurements must be statistically
-significant. To demonstrate feasibility, the proposer may be asked to instrument
-the target program with counters and collect them locally first.
-
-The full set of such proposals is available at the
-[proposal project](https://github.com/orgs/golang/projects/29) on GitHub.
-
 ## Charts {#charts}
 
 In addition to accepting uploads, the [telemetry.go.dev] website makes uploaded
@@ -276,8 +285,8 @@ outputs, which are available on the [telemetry.go.dev] homepage.
   into the chart name `foo` and bucket name `bar`. Each chart aggregates
   counters with the same chart name into the corresponding buckets.
 
-Charts are specified in the [chart config] format. For example, here's the
-chart config for the `gopls/client` chart.
+Charts are specified in the format of the [chartconfig] package. For example,
+here's the chart config for the `gopls/client` chart.
 
     title: Editor Distribution
     counter: gopls/client:{vscode,vscodium,vscode-insiders,code-server,eglot,govim,neovim,coc.nvim,sublimetext,other}
@@ -299,6 +308,40 @@ from that config:
     <img src="/doc/telemetry/gopls-clients.png" />
   </center>
 </div>
+
+## The telemetry proposal process {#proposals}
+
+Changes to the upload configuration or set of charts on [telemetry.go.dev] must
+go through the _telemetry proposal process_, which is intended to ensure
+transparency around changes to the telemetry configuration.
+
+Notably, there is actually no distinction between upload configuration and
+chart configuration in this process. Upload configuration is itself expressed
+in terms of the aggregations that we want to render on telemetry.go.dev, based
+on the principle that we should only collect data that we want to _see_.
+
+The proposal process is as follows:
+
+1. The proposer creates a CL modifying [config.txt] of the [chartconfig]
+   package to contain the desired new counter aggregations.
+2. The proposer files a [proposal] to merge this CL.
+3. Once discussion on the issue resolves, the proposal is approved or declined
+   by a member of the Go team.
+4. An automatic process regenerates the upload config to allow uploading of the
+   counters required for the new chart. This process will also regularly add
+   new versions of the relevant programs to the upload config as they are
+   released.
+
+In order to be approved, new charts can't carry sensitive user information,
+and additionally must be both useful and feasible. In order to be useful,
+charts must serve a specific purpose, with actionable outcomes. In order to be
+feasible, it must be possible to reliably collect the requisite data, and the
+resulting measurements must be statistically significant. To demonstrate
+feasibility, the proposer may be asked to instrument the target program with
+counters and collect them locally first.
+
+The full set of such proposals is available at the
+[proposal project](https://github.com/orgs/golang/projects/29) on GitHub.
 
 ## IDE Prompting {#ide}
 
@@ -370,7 +413,10 @@ A: Uploaded data is available as charts or merged summaries at [telemetry.go.dev
 A: At [golang.org/x/telemetry](/pkg/golang.org/x/telemetry).
 
 [`gopls`]: /pkg/golang.org/x/tools/gopls
+[`govulncheck`]: /pkg/golang.org/x/vuln/cmd/govulncheck
+[Delve]: /pkg/github.com/go-delve/delve#section-readme
 [debug.BuildInfo]: /pkg/runtime/debug#BuildInfo
 [proposal]: /issue/new?assignees=&labels=Telemetry-Proposal&projects=golang%2F29&template=12-telemetry.yml&title=x%2Ftelemetry%2Fconfig%3A+proposal+title
 [telemetry.go.dev]: https://telemetry.go.dev
-[chart config]: /pkg/golang.org/x/telemetry/internal/chartconfig
+[chartconfig]: /pkg/golang.org/x/telemetry/internal/chartconfig
+[config.txt]: https://go.googlesource.com/telemetry/+/refs/heads/master/internal/chartconfig/config.txt

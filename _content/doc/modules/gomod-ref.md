@@ -238,6 +238,47 @@ Go Modules Reference.
 See “[Go toolchains](/doc/toolchain)” for details about how the `toolchain` line
 affects Go toolchain selection.
 
+## godebug {#godebug}
+
+Indicates the default [GODEBUG](/doc/godebug) settings to be applied to the main packages of this module.
+These override any toolchain defaults, and are overridden by explicit `//go:debug` lines in main packages.
+
+### Syntax {#godebug-syntax}
+
+<pre>godebug <var>debug-key</var>=<var>debug-value</var></pre>
+
+<dl>
+    <dt>debug-key</dt>
+    <dd>The name of the setting to be applied.
+      A list of settings and the versions they were introduced in can be found at
+      <a href="/doc/godebug#history">GODEBUG History</a>.
+    </dd>
+    <dt>debug-value</dt>
+    <dd>The value provided to the setting.
+      If not otherwise specified, <code>0</code> to disable and <code>1</code> to enable the named behavior.</dd>
+</dl>
+
+### Examples {#godebug-examples}
+
+* Use the new 1.23 `asynctimerchan=0` behavior:
+  ```
+  godebug asynctimerchan=0
+  ```
+* Use the default GODEBUGs from Go 1.21, but the old `panicnil=1` behavior:
+  ```
+  godebug (
+      default=go1.21
+      panicnil=1
+  )
+  ```
+
+### Notes {#godebug-notes}
+
+GODEBUG settings only apply for builds of main packages and test binaries in the current module.
+They have no effect when a module is used as a dependency.
+
+See “[Go, Backwards Compatibility, and GODEBUG](/doc/godebug)” for details on backwards compatibility.
+
 ## require {#require}
 
 Declares a module as a dependency of the current module, specifying the
@@ -292,6 +333,53 @@ For more about managing dependencies, see the following:
 * [Discovering available updates](/doc/modules/managing-dependencies#discovering_updates)
 * [Upgrading or downgrading a dependency](/doc/modules/managing-dependencies#upgrading)
 * [Synchronizing your code's dependencies](/doc/modules/managing-dependencies#synchronizing)
+
+## tool {#tool}
+
+Adds a package as a dependency of the current module, and makes it available to run with `go tool` when the current working directory is within this module.
+
+### Syntax {#tool-syntax}
+
+<pre>tool <var>package-path</var></pre>
+
+<dl>
+    <dt>package-path</dt>
+    <dd>The tool's package path, a concatenation of the module containing
+        the tool and the (possibly empty) path to the package implementing
+        the tool within the module.</dd>
+</dl>
+
+### Examples {#tool-examples}
+
+* Declaring a tool implemented in the current module:
+    ```
+    module example.com/mymodule
+
+    tool example.com/mymodule/cmd/mytool
+    ```
+* Declaring a tool implemented in a separate module:
+    ```
+    module example.com/mymodule
+
+    tool example.com/atool/cmd/atool
+
+    require example.com/atool v1.2.3
+    ```
+
+### Notes {#tool-notes}
+
+You can use `go tool` to run tools declared in your module by fully qualified package path
+or, if there is no ambiguity, by the last path segment. In the first example
+above you could run `go tool mytool` or `go tool example.com/mymodule/cmd/mytool`.
+
+In workspace mode, you can use `go tool` to run a tool declared in any workspace module.
+
+Tools are built using the same module graph as the module itself. A [`require`
+directive](#require) is needed to select the version of the module that
+implements the tool. Any [`replace` directives](#replace), or [`exclude`
+directives](#exclude) also apply to the tool and its dependencies.
+
+For more information see [Tool dependencies](/doc/modules/managing-dependencies#tools).
 
 ## replace {#replace}
 

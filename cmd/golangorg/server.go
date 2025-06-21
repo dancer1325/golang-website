@@ -14,11 +14,9 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"go/format"
 	"html/template"
 	"io"
 	"io/fs"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -33,6 +31,7 @@ import (
 	"time"
 
 	"cloud.google.com/go/datastore"
+	"golang.org/x/build/relnote"
 	"golang.org/x/build/repos"
 	"golang.org/x/website"
 	"golang.org/x/website/internal/blog"
@@ -49,6 +48,7 @@ import (
 	"golang.org/x/website/internal/tour"
 	"golang.org/x/website/internal/web"
 	"golang.org/x/website/internal/webtest"
+	"rsc.io/markdown"
 )
 
 var (
@@ -72,16 +72,18 @@ func usage() {
 }
 
 func main() {
-	// Running locally, find the local _content directory,
+	// Running locally, find the local _content directory when it's available nearby,
 	// so that updates to those files appear on the local dev instance without restarting.
 	// On App Engine, leave contentDir empty, so we use the embedded copy,
 	// which is much faster to access than the simulated file system.
 	if *contentDir == "" && !runningOnAppEngine {
-		repoRoot := "../.."
-		if _, err := os.Stat("_content"); err == nil {
-			repoRoot = "."
+		if fi, err := os.Stat(filepath.Join("..", "..", "_content")); err == nil && fi.IsDir() {
+			*contentDir = filepath.Join("..", "..", "_content")
+		} else if fi, err := os.Stat("_content"); err == nil && fi.IsDir() {
+			*contentDir = "_content"
+		} else {
+			*contentDir = "" // Fall back to using embedded content.
 		}
-		*contentDir = filepath.Join(repoRoot, "_content")
 	}
 
 	if runningOnAppEngine {
@@ -117,6 +119,7 @@ func main() {
 		log.Printf("\tversion = %s", runtime.Version())
 		log.Printf("\taddress = %s", *httpAddr)
 		log.Printf("\tgoroot = %s", *goroot)
+		log.Printf("\tcontent = %s", contentSource())
 		handler = loggingHandler(handler)
 	}
 
@@ -124,6 +127,18 @@ func main() {
 	fmt.Fprintf(os.Stderr, "serving http://%s\n", *httpAddr)
 	if err := http.ListenAndServe(*httpAddr, handler); err != nil {
 		log.Fatalf("ListenAndServe %s: %v", *httpAddr, err)
+	}
+}
+
+// contentSource returns a human-readable description
+// of where the x/website _content dir is coming from.
+func contentSource() string {
+	if *contentDir == "" {
+		return "embedded content"
+	} else if abs, err := filepath.Abs(*contentDir); err == nil {
+		return abs
+	} else {
+		return *contentDir
 	}
 }
 
@@ -208,9 +223,22 @@ func NewHandler(contentDir, goroot string) http.Handler {
 	// which broke the redirect.
 	mux.Handle("m.golang.org/", http.RedirectHandler("https://mail.google.com/a/golang.org/", http.StatusMovedPermanently))
 
-	// Register a redirect handler for tip.golang.org/dl/ to the golang.org download page.
-	// (golang.org/dl and golang.google.cn/dl are registered separately.)
-	mux.Handle("tip.golang.org/dl/", http.RedirectHandler("https://go.dev/dl/", http.StatusFound))
+	// Redirect synthetic subtrees on tip.golang.org over to go.dev.
+	tipRedirects := []string{
+		"blog",
+		"cl", "change",
+		"design",
+		"dl",
+		"issue", "issues",
+		"s",
+		"talks",
+		"tour",
+	}
+	for _, name := range tipRedirects {
+		mux.Handle("tip.golang.org/"+name+"/", redirectPrefix("https://go.dev/"))
+	}
+	// tip.golang.org/play redirect adds ?v=gotip so the playground defaults to tip.
+	mux.Handle("tip.golang.org/play/", redirectPrefixQuery("https://go.dev/", "v=gotip"))
 
 	// TODO(rsc): The unionFS is a hack until we move the files in a followup CL.
 	siteMux := http.NewServeMux()
@@ -277,6 +305,7 @@ func newSite(mux *http.ServeMux, host string, content, goroot fs.FS) (*web.Site,
 		"rfc3339":         parseRFC3339,
 		"section":         section,
 		"version":         func() string { return runtime.Version() },
+		"docNext":         releaseNotePreview{goroot}.MergedFragments,
 	})
 	docs, err := pkgdoc.NewServer(fsys, site, googleCN)
 	if err != nil {
@@ -288,6 +317,34 @@ func newSite(mux *http.ServeMux, host string, content, goroot fs.FS) (*web.Site,
 	mux.Handle(host+"/pkg/", docs)
 	mux.Handle(host+"/doc/codewalk/", codewalk.NewServer(fsys, site))
 	return site, nil
+}
+
+// releaseNotePreview implements a preview of upcoming release notes.
+type releaseNotePreview struct {
+	goroot fs.FS // goroot provides the doc/next content to use, if any.
+}
+
+// MergedFragments returns Markdown obtained by merging release note fragments
+// found in the doc/next directory in goroot, to preview relnote generate output.
+// An empty string and no error is returned if the doc/next directory doesn't exist.
+func (p releaseNotePreview) MergedFragments() (markdownWithEmbeddedHTML template.HTML, _ error) {
+	next, err := fs.Sub(p.goroot, "doc/next")
+	if err != nil {
+		return "", err
+	}
+	if _, err := fs.Stat(next, "."); os.IsNotExist(err) || errors.Is(err, errNoFileSystem) {
+		// No next release note fragments.
+		return "", nil
+	}
+	doc, err := relnote.Merge(next)
+	if err != nil {
+		return "", fmt.Errorf("relnote.Merge: %v", err)
+	}
+	// Note: It's possible to render doc, a parsed Markdown document with embedded HTML,
+	// into Markdown or HTML. We choose to render to Markdown and let x/website/internal/web
+	// handle the remaining conversion to HTML. This means the rendering is more consistent
+	// with what'll happen when relnote generate output is added as _content/doc/go1.N.md.
+	return template.HTML(markdown.ToMarkdown(doc)), nil
 }
 
 func parseRFC3339(s string) (time.Time, error) {
@@ -360,8 +417,10 @@ func watchGit1(afs *atomicFS, repo string) {
 	}
 }
 
-var datastoreClient *datastore.Client
-var memcacheClient *memcache.Client
+var (
+	datastoreClient *datastore.Client
+	memcacheClient  *memcache.Client
+)
 
 func appEngineSetup(mux *http.ServeMux) {
 	googleAnalytics = os.Getenv("GOLANGORG_ANALYTICS")
@@ -391,20 +450,6 @@ func appEngineSetup(mux *http.ServeMux) {
 type fmtResponse struct {
 	Body  string
 	Error string
-}
-
-// fmtHandler takes a Go program in its "body" form value, formats it with
-// standard gofmt formatting, and writes a fmtResponse as a JSON object.
-func fmtHandler(w http.ResponseWriter, r *http.Request) {
-	resp := new(fmtResponse)
-	body, err := format.Source([]byte(r.FormValue("body")))
-	if err != nil {
-		resp.Error = err.Error()
-	} else {
-		resp.Body = string(body)
-	}
-	w.Header().Set("Content-type", "application/json; charset=utf-8")
-	json.NewEncoder(w).Encode(resp)
 }
 
 var validHosts = map[string]bool{
@@ -765,7 +810,7 @@ func (s *seekableFS) Open(name string) (fs.File, error) {
 	if info.IsDir() {
 		return f, nil
 	}
-	data, err := ioutil.ReadAll(f)
+	data, err := io.ReadAll(f)
 	if err != nil {
 		f.Close()
 		return nil, err
@@ -797,7 +842,7 @@ type memFile struct {
 
 func (f *memFile) Stat() (fs.FileInfo, error) { return f, nil }
 func (f *memFile) Name() string               { return f.name }
-func (*memFile) Mode() fs.FileMode            { return 0444 }
+func (*memFile) Mode() fs.FileMode            { return 0o444 }
 func (*memFile) ModTime() time.Time           { return time.Time{} }
 func (*memFile) IsDir() bool                  { return false }
 func (*memFile) Sys() interface{}             { return nil }
@@ -831,21 +876,34 @@ func (m *mountFS) Open(name string) (fs.File, error) {
 	return m.old.Open(name)
 }
 
+var errNoFileSystem = errors.New("no file system")
+
 // Open returns fsys.Open(name) where fsys is the file system passed to the most recent call to Set.
-// If there has been no call to Set, Open returns an error with text “no file system”.
+// If there has been no call to Set, Open returns errNoFileSystem, an error with text “no file system”.
 func (a *atomicFS) Open(name string) (fs.File, error) {
 	fsys, _ := a.v.Load().(*fs.FS)
 	if fsys == nil {
-		return nil, &fs.PathError{Path: name, Op: "open", Err: fmt.Errorf("no file system")}
+		return nil, &fs.PathError{Path: name, Op: "open", Err: errNoFileSystem}
 	}
 	return (*fsys).Open(name)
 }
 
 func redirectPrefix(prefix string) http.Handler {
+	return redirectPrefixQuery(prefix, "")
+}
+
+func redirectPrefixQuery(prefix, query string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		url := strings.TrimSuffix(prefix, "/") + "/" + strings.TrimPrefix(r.URL.Path, "/")
-		if r.URL.RawQuery != "" {
-			url += "?" + r.URL.RawQuery
+		if r.URL.RawQuery != "" || query != "" {
+			url += "?"
+			if r.URL.RawQuery != "" {
+				url += r.URL.RawQuery
+				if query != "" {
+					url += "&"
+				}
+			}
+			url += query
 		}
 		http.Redirect(w, r, url, http.StatusMovedPermanently)
 	})

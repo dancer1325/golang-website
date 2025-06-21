@@ -125,11 +125,15 @@ compatible with previous versions.
   the corresponding release versions. For example, `v1.2.3-pre` comes before
   `v1.2.3`.
 * The build metadata suffix is ignored for the purpose of comparing versions.
-  Tags with build metadata are ignored in version control repositories, but
-  build metadata is preserved in versions specified in `go.mod` files. The
-  suffix `+incompatible` denotes a version released before migrating to modules
-  version major version 2 or later (see [Compatibility with non-module
-  repositories](#non-module-compat)).
+  The go command accepts versions with build metadata and converts them to
+  pseudo-versions to maintain the total ordering between versions.
+  * The special suffix `+incompatible` denotes a version released before
+    migrating to modules version major version 2 or later (see [Compatibility
+    with non-module repositories](#non-module-compat)).
+  * The special suffix `+dirty` is appended to the version information of a
+    binary when it's built with a Go toolchain 1.24 or later within a valid
+    local Version Control System (VCS) repository that contains uncommitted
+    changes in the working directory.
 
 A version is considered unstable if its major version is 0 or it has a
 pre-release suffix. Unstable versions are not subject to compatibility
@@ -347,7 +351,7 @@ directive, made up of a keyword followed by arguments. For example:
 ```
 module example.com/my/thing
 
-go 1.12
+go 1.23.0
 
 require example.com/other/thing v1.0.2
 require example.com/new/thing/v2 v2.3.4
@@ -480,6 +484,8 @@ for details on EBNF syntax.
 GoMod = { Directive } .
 Directive = ModuleDirective |
             GoDirective |
+            ToolDirective |
+            IgnoreDirective |
             RequireDirective |
             ExcludeDirective |
             ReplaceDirective |
@@ -554,7 +560,7 @@ major version. Individual minor and patch versions cannot be deprecated;
 
 A `go` directive indicates that a module was written assuming the semantics of a
 given version of Go. The version must be a valid [Go version](/doc/toolchain#version),
-such as `1.9`, `1.14`, or `1.21rc1`.
+such as `1.14`, `1.21rc1`, or `1.23.0`.
 
 The `go` directive sets the minimum version of Go required to use this module.
 Before Go 1.21, the directive was advisory only; now it is a mandatory requirement:
@@ -623,7 +629,7 @@ GoVersion = string | ident .  /* valid release version; see above */
 Example:
 
 ```
-go 1.14
+go 1.23.0
 ```
 
 ### `toolchain` directive {#go-mod-file-toolchain}
@@ -649,6 +655,33 @@ Example:
 
 ```
 toolchain go1.21.0
+```
+
+### `godebug` directive {#go-mod-file-godebug}
+
+A `godebug` directive declares a single [GODEBUG setting](/doc/godebug)
+to apply when this module is the main module.
+There can be more than one such line, and they can be factored.
+It is an error for the main module to name a GODEBUG key that does not exist.
+The effect of `godebug key=value` is as if every main package being compiled
+contained a source file that listed `//go:debug key=value`.
+
+```
+GodebugDirective = "godebug" ( GodebugSpec | "(" newline { GodebugSpec } ")" newline ) .
+GodebugSpec = GodebugKey "=" GodebugValue newline.
+GodebugKey = GodebugChar { GodebugChar }.
+GodebugValue = GodebugChar { GodebugChar }.
+GodebugChar = any non-space character except , " ` ' (comma and quotes).
+```
+
+Example:
+
+```
+godebug default=go1.21
+godebug (
+	panicnil=1
+	asynctimerchan=0
+)
 ```
 
 ### `require` directive {#go-mod-file-require}
@@ -694,6 +727,65 @@ require golang.org/x/net v1.2.3
 require (
     golang.org/x/crypto v1.4.5 // indirect
     golang.org/x/text v1.6.7
+)
+```
+
+### `tool` directive {#go-mod-file-tool}
+
+A `tool` directive adds a package as a dependency of the current module. It also
+makes it available to run with `go tool` when the current working directory is
+within this module, or within a workspace that contains this module.
+
+If the tool package is not in the current module, a `require`
+directive must be present that specifies the version of the tool to use.
+
+The `tool` meta-pattern resolves to the list of tools defined in the current module's
+`go.mod`, or in workspace mode to the union of all tools defined in all modules in the
+workspace.
+
+```
+ToolDirective = "tool" ( ToolSpec | "(" newline { ToolSpec } ")" newline ) .
+ToolSpec = ModulePath newline .
+```
+
+Example:
+
+```
+tool golang.org/x/tools/cmd/stringer
+
+tool (
+    example.com/module/cmd/a
+    example.com/module/cmd/b
+)
+```
+
+### `ignore` directive {#go-mod-file-ignore}
+
+An `ignore` directive will cause the go command ignore the slash-separated
+directory paths, and any files or directories recursively contained in them,
+when matching package patterns.
+
+If the path starts with `./`, the path is interpreted relative to the
+module root directory, and that directory and any directories or files
+recursively contained in it will be ignored when matching package patterns.
+
+Otherwise, any directories with the path at any depth in the module, and
+any directories or files recursively contained in them will be ignored.
+
+```
+IgnoreDirective = "ignore" ( IgnoreSpec | "(" newline { IgnoreSpec } ")" newline ) .
+IgnoreSpec = RelativeFilePath newline .
+RelativeFilePath = /* slash-separated relative file path */ .
+```
+
+Example
+```
+ignore ./node_modules
+
+ignore (
+    static
+    content/html
+    ./third_party/javascript
 )
 ```
 
@@ -911,7 +1003,7 @@ For example, consider this `go.mod` file:
 ```
 module example.com/M
 
-go 1.16
+go 1.23.0
 
 require (
     example.com/A v1
@@ -1170,7 +1262,7 @@ A workspace is defined by a UTF-8 encoded text file named `go.work`. The
 a keyword followed by arguments. For example:
 
 ```
-go 1.18
+go 1.23.0
 
 use ./my/first/thing
 use ./my/second/thing
@@ -1197,6 +1289,25 @@ package can be used by Go programs to make the same changes programmatically.
 
 The go command will maintain a `go.work.sum` file that keeps track of hashes used by the workspace
 that are not in collective workspace modules' go.sum files.
+
+It is generally inadvisable to commit go.work files into version control
+systems, for two reasons:
+
+* A checked-in `go.work` file might override a developer's own `go.work` file
+  from a parent directory, causing confusion when their `use` directives don't
+  apply.
+* A checked-in `go.work` file may cause a continuous integration (CI) system to
+  select and thus test the wrong versions of a module's dependencies. CI systems
+  should generally not be allowed to use the `go.work` file so that they can test
+  the behavior of the module as it would be used when required by other modules,
+  where a `go.work` file within the module has no effect.
+
+That said, there are some cases where committing a `go.work` file makes sense.
+For example, when the modules in a repository are developed exclusively with
+each other but not together with external modules, there may not be a reason the
+developer would want to use a different combination of modules in a workspace.
+In that case, the module author should ensure the individual modules are tested
+and released properly.
 
 ### Lexical elements {#go-work-file-lexical}
 
@@ -1251,7 +1362,7 @@ GoVersion = string | ident .  /* valid release version; see above */
 Example:
 
 ```
-go 1.18
+go 1.23.0
 ```
 
 ### `toolchain` directive {#go-work-file-toolchain}
@@ -1272,6 +1383,14 @@ Example:
 ```
 toolchain go1.21.0
 ```
+
+### `godebug` directive {#go-work-file-godebug}
+
+A `godebug` directive declares a single [GODEBUG setting](/doc/godebug)
+to apply when working in this workspace.
+The syntax and effect is the same as the [`go.mod` file's `godebug` directive](#go-mod-file-godebug).
+When a workspace is in use, `godebug` directives in `go.mod` files are ignored.
+
 
 ### `use` directive {#go-work-file-use}
 
@@ -1771,7 +1890,7 @@ arguments must satisfy the following constraints:
 
 * Arguments must be package paths or package patterns (with "`...`" wildcards).
   They must not be standard packages (like `fmt`), meta-patterns (`std`, `cmd`,
-  `all`), or relative or absolute file paths.
+  `all`, `work`, `tool`), or relative or absolute file paths.
 * All arguments must have the same version suffix. Different queries are not
   allowed, even if they refer to the same version.
 * All arguments must refer to packages in the same module at the same version.
@@ -2034,6 +2153,10 @@ The editing flags specify a sequence of editing operations.
   flag cannot add a rationale comment for the `retract` directive. Rationale
   comments are recommended and may be shown by `go list -m -u` and other
   commands.
+* The `-tool=path` and `-droptool=path` flags add and drop a `tool` directive
+  for the given paths. Note that this will not add necessary dependencies to
+  the build graph. Users should prefer `go get -tool path` to add a tool, or
+  `go get -tool path@none` to remove one.
 
 The editing flags may be repeated. The changes are applied in the order given.
 
@@ -2083,6 +2206,10 @@ type Retract struct {
     Low       string
     High      string
     Rationale string
+}
+
+type Tool struct {
+    Path      string
 }
 ```
 
@@ -2194,7 +2321,7 @@ requirements and to drop unused requirements.
 Usage:
 
 ```
-go mod tidy [-e] [-v] [-go=version] [-compat=version]
+go mod tidy [-e] [-v] [-x] [-diff] [-go=version] [-compat=version]
 ```
 
 `go mod tidy` ensures that the `go.mod` file matches the source code in the
@@ -2209,8 +2336,14 @@ despite errors encountered while loading packages.
 The `-v` flag causes `go mod tidy` to print information about removed modules
 to standard error.
 
+The `-x` flag causes `go mod tidy` to print the commands `tidy` executes.
+
+The `-diff` flag causes `go mod tidy` not to modify go.mod or go.sum but
+instead print the necessary changes as a unified diff. It exits
+with a non-zero code if the diff is not empty.
+
 `go mod tidy` works by loading all of the packages in the [main
-module](#glos-main-module) and all of the packages they import,
+module](#glos-main-module), all of its tools, and all of the packages they import,
 recursively. This includes packages imported by tests (including tests in other
 modules). `go mod tidy` acts as if all build tags are enabled, so it will
 consider platform-specific source files and files that require custom build
@@ -2724,8 +2857,7 @@ or removed from the `go.work` file if it does not exist on disk.
 
 The `-r` flag searches recursively for modules in the argument
 directories, and the use command operates as if each of the directories
-were specified as arguments: namely, `use` directives will be added for
-directories that exist, and removed for directories that do not exist.
+were specified as arguments.
 
 ### `go work sync` {#go-work-sync}
 
@@ -3077,7 +3209,7 @@ If the module path has a VCS qualifier (one of `.bzr`, `.fossil`, `.git`, `.hg`,
 `.svn`) at the end of a path component, the `go` command will use everything up
 to that path qualifier as the repository URL. For example, for the module
 `example.com/foo.git/bar`, the `go` command downloads the repository at
-`example.com/foo.git` using git, expecting to find the module in the `bar`
+`example.com/foo` using git, expecting to find the module in the `bar`
 subdirectory. The `go` command will guess the protocol to use based on the
 protocols supported by the version control tool.
 
@@ -3102,13 +3234,15 @@ avoid confusing the `go` command's restricted parser. In particular, it should
 appear before any raw JavaScript or CSS. The `<meta>` tag must have the form:
 
 ```
-<meta name="go-import" content="root-path vcs repo-url">
+<meta name="go-import" content="root-path vcs repo-url [subdirectory]">
 ```
 
 `root-path` is the repository root path, the portion of the module path that
-corresponds to the repository's root directory. It must be a prefix or an exact
-match of the requested module path. If it's not an exact match, another request
-is made for the prefix to verify the `<meta>` tags match.
+corresponds to the repository's root directory, or to the `subdirectory`,
+if present and using Go 1.25 or later (see the section on `subdirectory` below).
+It must be a prefix or an exact  match of the requested module path. If it's
+not an exact match, another request is made for the prefix to verify the `<meta>`
+tags match.
 
 `vcs` is the version control system. It must be one of the tools listed in the
 table below or the keyword `mod`, which instructs the `go` command to download
@@ -3122,6 +3256,13 @@ scheme), the `go` command will try each protocol supported by the version
 control system. For example, with Git, the `go` command will try `https://` then
 `git+ssh://`. Insecure protocols (like `http://` and `git://`) may only be used
 if the module path is matched by the `GOINSECURE` environment variable.
+
+`subdirectory`, if present, is the slash-separated subdirectory of the repository
+that the `root-path` corresponds to, overriding the default of the repository's
+root directory. `go-import` meta tags providing a `subdirectory` are only recognized
+by Go 1.25 and later. Attempts to fetch resolve modules on earlier versions of
+Go will ignore the meta tag and result in a resolution failure if the module can
+not be resolved elsewhere.
 
 <table id="vcs-support" class="ModTable">
   <thead>

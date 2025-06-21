@@ -67,13 +67,13 @@ The major Cloud providers ([GCP](https://cloud.google.com/go/home), [AWS](https:
 
 {{projects `
   - company: Google
-    url: http://cloud.google.com/go
+    url: https://cloud.google.com/go
     logoSrc: google-cloud.svg
     logoSrcDark: google-cloud.svg
     desc: Google Cloud uses Go across its ecosystem of products and tools, including Kubernetes, gVisor, Knative, Istio, and Anthos. Go is fully supported on Google Cloud across all APIs and runtimes.
     ctas:
       - text: Go on Google Cloud Platform
-        url: http://cloud.google.com/go
+        url: https://cloud.google.com/go
   - company: Capital One
     url: https://www.capitalone.com/
     logoSrc: capitalone_light.svg
@@ -89,7 +89,7 @@ The major Cloud providers ([GCP](https://cloud.google.com/go/home), [AWS](https:
     desc: Dropbox was built on Python, but in 2013 decided to migrate their performance-critical backends to Go. Today, most of the company’s infrastructure is written in Go.
     ctas:
       - text: Dropbox libraries
-        url: https://blogs.dropbox.com/tech/2014/07/open-sourcing-our-go-libraries/
+        url: https://dropbox.tech/infrastructure/open-sourcing-our-go-libraries
   - company: Mercado Libre
     url: https://www.mercadolibre.com.ar/
     logoSrc: mercadolibre_light.svg
@@ -153,9 +153,6 @@ The major Cloud providers ([GCP](https://cloud.google.com/go/home), [AWS](https:
   - title: Web frameworks
     viewMoreUrl: https://pkg.go.dev/search?q=web+framework
     items:
-      - text: Buffalo
-        url: https://gobuffalo.io/en/
-        desc: A framework for rapid web development in Go, curating Go and JS libraries together.
       - text: Echo
         url: https://echo.labstack.com/
         desc: A high performance, extensible, and minimalist Go web framework
@@ -166,11 +163,14 @@ The major Cloud providers ([GCP](https://cloud.google.com/go/home), [AWS](https:
         url: https://gin-gonic.com/
         desc: A web framework written in Go, with a martini-like API.
       - text: Gorilla
-        url: http://www.gorillatoolkit.org/
+        url: https://www.gorillatoolkit.org/
         desc: A web toolkit for the Go programming language.
   - title: Routers
     viewMoreUrl: https://pkg.go.dev/search?q=http%20router
     items:
+      - text: net/http
+        url: https://pkg.go.dev/net/http
+        desc: A standard library HTTP package
       - text: julienschmidt/httprouter
         url: https://pkg.go.dev/github.com/julienschmidt/httprouter?tab=overview
         desc: A lightweight high performance HTTP request router
@@ -180,9 +180,6 @@ The major Cloud providers ([GCP](https://cloud.google.com/go/home), [AWS](https:
       - text: Chi
         url: https://pkg.go.dev/github.com/go-chi/chi?tab=overview
         desc: A lightweight, idiomatic and composable router for building Go HTTP services.
-      - text: net/http
-        url: https://pkg.go.dev/net/http
-        desc: A standard library HTTP package
   - title: Template Engines
     viewMoreUrl: https://pkg.go.dev/search?q=templates
     items:
@@ -208,7 +205,7 @@ The major Cloud providers ([GCP](https://cloud.google.com/go/home), [AWS](https:
         url: https://gorm.io/
         desc: An ORM library for Go
       - text: Bleve
-        url: http://blevesearch.com/
+        url: https://blevesearch.com/
         desc: Full-text search and indexing for Go
       - text: CockroachDB
         url: https://www.cockroachlabs.com/

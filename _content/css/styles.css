@@ -138,6 +138,7 @@
     --color-text-subtle: var(--gray-7);
     --color-text-alert: #e67193;
     --color-code-comment: var(--green-light);
+    --color-bright-text-link: var(--turq-med);
   }
 }
 
@@ -858,8 +859,7 @@ h1 + h2.subtitle {
   overflow-x: auto;
   padding: 1.5rem;
 }
-.Article pre,
-.Article code {
+.Article pre {
   color: var(--color-text);
 }
 .Article pre {
@@ -871,6 +871,17 @@ h1 + h2.subtitle {
 }
 .Article img {
   max-width: 100%;
+}
+.Article a.Article-idLink {
+  opacity: 0;
+}
+.Article h1:hover a.Article-idLink,
+.Article h2:hover a.Article-idLink,
+.Article h3:hover a.Article-idLink,
+.Article h4:hover a.Article-idLink,
+.Article a.Article-idLink:hover {
+  opacity: 1;
+  padding: 0.2rem;
 }
 .CopyPaste {
   display: flex;
@@ -4570,6 +4581,8 @@ a.error {
   border-top-left-radius: 0.3125rem;
   border-top-right-radius: 0.3125rem;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .PlayPage {
   color: var(--color-text);
@@ -4600,6 +4613,7 @@ a.error {
 }
 .Playground-inputContainer #wrap {
   height: 100%;
+  min-height: 0; /* prevent #wrap from overflowing the container */
 }
 .Playground-outputContainer {
   border-bottom-right-radius: 0.3125rem;
