@@ -1,5 +1,3 @@
-* https://go.dev/doc/code
-
 # Goal
 * develop a Go package inside a module
 * Check golang repo 'standardLibrary/cmd/go'
@@ -41,6 +39,7 @@
         * Attempt2: Open .bash_profile and switch to ''
         * Solution: TODO: 
   * else → binary is installed under '$HOME/go/bin'
+
 ## Import packages from your module
 * Create the subdirectory '/morestrings' & add a file
 * `cd morestrings` & `go build`
@@ -52,6 +51,7 @@
 * Package name can be used & install it -- `go install example/user/hello`
 * `hello` runs the binary
   * Notes: Where is it placed ? -- TODO:
+
 ## Import packages from remote modules
 * Add as common 'import' and by default it uses the 
 * `go mod tidy` -- download & record & remove missing modules --
@@ -62,7 +62,7 @@
   * run each function
   * if the function calls a failure function → test is considered as failed
     * *Example of failure function:* `t.Error` OR `t.Fail`
-* how to create?
+* 👀how to create? 👀
   * file
     * name —  `*_test.go` —
     * with functions
