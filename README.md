@@ -2,24 +2,22 @@
 
 [![Go Reference](https://pkg.go.dev/badge/golang.org/x/website.svg)](https://pkg.go.dev/golang.org/x/website)
 
-This repo holds content and serving programs for the go.dev and golang.org web sites.
+* == go.dev & golang.org
+  * content
+    * [go.dev](_content)
+    * [go.dev/tour](tour)
+  * serving programs
+    * [cmd](cmd)
+      * NOT use [_content](_content)
+    * [internal](internal)
 
-Content is in \_content/ (go.dev) and tour/ (go.dev/tour).
-Server code is in cmd/ and internal/.
+## how to run locally go.dev + golang.org server?
 
-To run the combined go.dev+golang.org server to preview local content changes, use:
-
-    go run ./cmd/golangorg
-
-The supporting programs cmd/admingolangorg and cmd/googlegolangorg
-are the servers for admin.golang.org and google.golang.org.
-(They do not use the \_content/ directories.)
-
-Each command directory has its own README.md explaining deployment.
+* `go run ./cmd/golangorg`
 
 ## JS/TS/CSS Formatting
 
-This repository uses [eslint](https://eslint.org/) to format JS and TS files,
+* TODO: This repository uses [eslint](https://eslint.org/) to format JS and TS files,
 and [stylelint](https://stylelint.io/) to format CSS files.
 
 See also:
