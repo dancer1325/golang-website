@@ -7,31 +7,40 @@ not be updated over time. -->
 
 ## Introduction {#introduction}
 
-Modules are how Go manages dependencies.
+* Modules
+  * == way / Go manages dependencies
 
-This document is a detailed reference manual for Go's module system. For an
-introduction to creating Go projects, see [How to Write Go
-Code](/doc/code.html). For information on using modules,
-migrating projects to modules, and other topics, see the blog series starting
-with [Using Go Modules](/blog/using-go-modules).
+* see
+  * [How to Write Go Code](../doc/HowToWriteGoCode)
+  * [How to use Go Modules](../blog/using-go-modules)
 
 ## Modules, packages, and versions {#modules-overview}
 
-A <dfn>module</dfn> is a collection of packages that are released, versioned,
-and distributed together. Modules may be downloaded directly from version
-control repositories or from module proxy servers.
+* module
+  * := collection of packages / together
+    * released,
+    * versioned,
+    * distributed
+  * placed | download it
+    * version control repositories
+    * module proxy servers
+  * == [module path](#glos-module-path) + module's dependencies
 
-A module is identified by a [module path](#glos-module-path), which is declared
-in a [`go.mod` file](#go-mod-file), together with information about the
-module's dependencies. The <dfn>module root directory</dfn> is the directory
-that contains the `go.mod` file. The <dfn>main module</dfn> is the module
-containing the directory where the `go` command is invoked.
+* module root directory
+  * == directory / contains the "go.mod"
 
-Each <dfn>package</dfn> within a module is a collection of source files in the
-same directory that are compiled together. A <dfn>package path</dfn> is the
-module path joined with the subdirectory containing the package (relative to the
-module root). For example, the module `"golang.org/x/net"` contains a package in
-the directory `"html"`. That package's path is `"golang.org/x/net/html"`.
+* main module
+  * == module / contain the directory | `go` command is invoked
+
+* EACH module's package
+  * := collection of source files | SAME directory / compiled together
+
+* package path
+  * := module path + subdirectory containing the package
+
+* For example, the module `"golang.org/x/net"` contains a package in
+the directory `"html"`
+* That package's path is `"golang.org/x/net/html"`.
 
 ### Module paths {#module-path}
 
@@ -2130,8 +2139,6 @@ why a module is needed.
 
 ### `go mod init` {#go-mod-init}
 
-Usage:
-
 ```
 go mod init [module-path]
 ```
@@ -2143,34 +2150,41 @@ go mod init
 go mod init example.com/m
 ```
 
-The `go mod init` command initializes and writes a new `go.mod` file in the
-current directory, in effect creating a new module rooted at the current
-directory. The `go.mod` file must not already exist.
+* `go mod init`
+  * | CURRENT directory,
+    * initializes & writes a NEW `go.mod`
+      * == create a NEW module | CURRENT directory
+      * requirements
+        * ❌`go.mod` must NOT ALREADY exist❌
 
-`init` accepts one optional argument, the [module path](#glos-module-path) for
-the new module. See [Module paths](#module-path) for instructions on choosing
-a module path. If the module path argument is omitted, `init` will attempt
-to infer the module path using import comments in `.go` files, vendoring tool
-configuration files, and the current directory (if in `GOPATH`).
+* [`module-path`](#glos-module-path)
+  * OPTIONAL argument
+    * if it's omitted -> try to infer the -- via -- 
+      * import comments | ".go" files
+      * vendoring tool configuration files
+      * CURRENT directory (if in `GOPATH`) 
+  * == NEW module's path
+  * see [Module paths](#module-paths-module-path)
 
-If a configuration file for a vendoring tool is present, `init` will attempt to
-import module requirements from it. `init` supports the following configuration
-files.
+* `init`
+  * supports the configuration files
+    * `GLOCKFILE` (Glock)
+    * `Godeps/Godeps.json` (Godeps)
+    * `Gopkg.lock` (dep)
+    * `dependencies.tsv` (godeps)
+    * `glide.lock` (glide)
+    * `vendor.conf` (trash)
+    * `vendor.yml` (govend)
+    * `vendor/manifest` (gvt)
+    * `vendor/vendor.json` (govendor)
 
-* `GLOCKFILE` (Glock)
-* `Godeps/Godeps.json` (Godeps)
-* `Gopkg.lock` (dep)
-* `dependencies.tsv` (godeps)
-* `glide.lock` (glide)
-* `vendor.conf` (trash)
-* `vendor.yml` (govend)
-* `vendor/manifest` (gvt)
-* `vendor/vendor.json` (govendor)
-
+* TODO:
 Vendoring tool configuration files can't always be translated with perfect
-fidelity. For example, if multiple packages within the same repository are
+fidelity
+* For example, if multiple packages within the same repository are
 imported at different versions, and the repository only contains one module, the
-imported `go.mod` can only require the module at one version. You may wish to
+imported `go.mod` can only require the module at one version
+* You may wish to
 run [`go list -m all`](#go-list-m) to check all versions in the [build
 list](#glos-build-list), and [`go mod tidy`](#go-mod-tidy) to add missing
 requirements and to drop unused requirements.
@@ -3427,24 +3441,37 @@ version control tool for any module.
 
 ## Module zip files {#zip-files}
 
-Module versions are distributed as `.zip` files. There is rarely any need to
-interact directly with these files, since the `go` command creates, downloads,
-and extracts them automatically from [module proxies](#glos-module-proxy) and
-version control repositories. However, it's still useful to know about these
-files to understand cross-platform compatibility constraints or when
-implementing a module proxy.
+* Module versions
+  * are distributed -- as -- ".zip" files
+  * uses
+    * RARELY
+      * Reason: 🧠`go` command
+        * creates,
+        * downloads,
+        * extracts them AUTOMATICALLY -- from --
+          * [module proxies](#glos-module-proxy)
+          * version control repositories🧠
+    * understand cross-platform compatibility constraints
+    * implement a module proxy
 
-The [`go mod download`](#go-mod-download) command downloads zip files
-for one or more modules, then extracts those files into the [module
-cache](#glos-module-cache). Depending on `GOPROXY` and other [environment
-variables](#environment-variables), the `go` command may either download
-zip files from a proxy or clone source control repositories and create
-zip files from them. The `-json` flag may be used to find the location of
-download zip files and their extracted contents in the module cache.
+* [`go mod download`](#go-mod-download) command
+  * downloads zip files -- for -- >= 1 modules
+    * from -- , based on `GOPROXY` & other [environment variables](#environment-variables), -- 
+      * proxy
+      * clone source control repositories + create ".zip" 
+  * extracts those files | [module cache](#glos-module-cache)
+  * `-json` flag
+    * allows
+      * find the downloaded ".zip"'s 
+        * locations
+        * extracted contents | module cache
 
-The [`golang.org/x/mod/zip`](https://pkg.go.dev/golang.org/x/mod/zip?tab=doc)
-package may be used to create, extract, or check contents of zip files
-programmatically.
+* [`golang.org/x/mod/zip`](https://pkg.go.dev/golang.org/x/mod/zip?tab=doc)
+  * == package /
+    * allows, programmatically, about ".zip"
+      * create,
+      * extract,
+      * check contents
 
 ### File path and size constraints {#zip-path-size-constraints}
 
@@ -3945,174 +3972,115 @@ conflicts on case-insensitive file systems.
 
 ## Authenticating modules {#authenticating}
 
-When the `go` command downloads a module [zip file](#zip-files) or [`go.mod`
-file](#go-mod-file) into the [module cache](#module-cache), it computes a
-cryptographic hash and compares it with a known value to verify the file hasn't
-changed since it was first downloaded. The `go` command reports a security error
-if a downloaded file does not have the correct hash.
+* | `go` command downloads a module [".zip"](#zip-files) or ["go.mod"](#go-mod-file) | [module cache](#module-cache), 
+  * 👀it computes a cryptographic hash 👀 
+    * | "go.mod"
+      * -- based on the -- file content
+    * | ".zip"
+      * -- based on the -- file's content & file's names / follow deterministic order
+        * see [`golang.org/x/mod/sumdb/dirhash`](https://pkg.go.dev/golang.org/x/mod/sumdb/dirhash?tab=doc)
+  * 👀compares it vs module's "go.sum"👀
+    * ⚠️if they do NOT match -> `go` command reports a security error⚠️ 
+    * Reason: 🧠verify the file has NOT changed🧠
 
-For `go.mod` files, the `go` command computes the hash from the file
-content. For module zip files, the `go` command computes the hash from the names
-and contents of files within the archive in a deterministic order. The hash is
-not affected by file order, compression, alignment, and other metadata. See
-[`golang.org/x/mod/sumdb/dirhash`](https://pkg.go.dev/golang.org/x/mod/sumdb/dirhash?tab=doc)
-for hash implementation details.
 
 The `go` command compares each hash with the corresponding line in the main
-module's [`go.sum` file](#go-sum-files). If the hash is different from the hash
+module's [`go.sum` file](#go-sum-files)
+* If the hash is different from the hash
 in `go.sum`, the `go` command reports a security error and deletes the
 downloaded file without adding it into the module cache.
 
 If the `go.sum` file is not present, or if it doesn't contain a hash for the
 downloaded file, the `go` command may verify the hash using the [checksum
 database](#checksum-database), a global source of hashes for publicly available
-modules. Once the hash is verified, the `go` command adds it to `go.sum` and
-adds the downloaded file in the module cache. If a module is private (matched by
+modules
+* Once the hash is verified, the `go` command adds it to `go.sum` and
+adds the downloaded file in the module cache
+* If a module is private (matched by
 the `GOPRIVATE` or `GONOSUMDB` environment variables) or if the checksum
 database is disabled (by setting `GOSUMDB=off`), the `go` command accepts the
 hash and adds the file to the module cache without verifying it.
 
 The module cache is usually shared by all Go projects on a system, and each
-module may have its own `go.sum` file with potentially different hashes. To
+module may have its own `go.sum` file with potentially different hashes
+* To
 avoid the need to trust other modules, the `go` command verifies hashes using
-the main module's `go.sum` whenever it accesses a file in the module cache. Zip
+the main module's `go.sum` whenever it accesses a file in the module cache
+* Zip
 file hashes are expensive to compute, so the `go` command checks pre-computed
-hashes stored alongside zip files instead of re-hashing the files. The [`go mod
+hashes stored alongside zip files instead of re-hashing the files
+* The [`go mod
 verify`](#go-mod-verify) command may be used to check that zip files and
 extracted directories have not been modified since they were added to the module
 cache.
 
 ### go.sum files {#go-sum-files}
 
-A module may have a text file named `go.sum` in its root directory, alongside
-its `go.mod` file. The `go.sum` file contains cryptographic hashes of the
-module's direct and indirect dependencies. When the `go` command downloads a
-module `.mod` or `.zip` file into the [module cache](#module-cache), it computes
-a hash and checks that the hash matches the corresponding hash in the main
-module's `go.sum` file. `go.sum` may be empty or absent if the module has no
-dependencies or if all dependencies are replaced with local directories using
-[`replace` directives](#go-mod-file-replace).
-
-Each line in `go.sum` has three fields separated by spaces: a module path,
-a version (possibly ending with `/go.mod`), and a hash.
-
-* The module path is the name of the module the hash belongs to.
-* The version is the version of the module the hash belongs to. If the version
-  ends with `/go.mod`, the hash is for the module's `go.mod` file only;
-  otherwise, the hash is for the files within the module's `.zip` file.
-* The hash column consists of an algorithm name (like `h1`) and a base64-encoded
-  cryptographic hash, separated by a colon (`:`). Currently, SHA-256 (`h1`) is
-  the only supported hash algorithm. If a vulnerability in SHA-256 is discovered
-  in the future, support will be added for another algorithm (named `h2` and
-  so on).
-
-The `go.sum` file may contain hashes for multiple versions of a module. The `go`
-command may need to load `go.mod` files from multiple versions of a dependency
-in order to perform [minimal version selection](#minimal-version-selection).
-`go.sum` may also contain hashes for module versions that aren't needed anymore
-(for example, after an upgrade). [`go mod tidy`](#go-mod-tidy) will add missing
-hashes and will remove unnecessary hashes from `go.sum`.
+* == 💡module's direct's cryptographic hashes + module's indirect dependencies's cryptographic hashes💡
+  * ⚠️OPTIONAL⚠️
+    * if the module has NO dependencies OR ALL dependencies are replaced -- with -- local directories -> EMPTY or absent
+  * uses
+    * | `go` command downloads a module [".zip"](#zip-files) or ["go.mod"](#go-mod-file) | [module cache](#module-cache),
+      * to verify trusthness
+  ```go.sum
+  ...
+  modulePath version hash
+  ...
+  ```
+  * `hash`
+    * == `algorithmName:base64-encodedCryptographicHash`
+      * SUPPORTED `algorithmName`
+        * SHA-256 == `h1`
+    * ALLOWED values
+      * if the version ends with `/go.mod` -> has == module's "go.mod"'s hash
+      * otherwise -> hash == ".zip"'s files' hash
+  * may contain module's MULTIPLE versions' hashes
+    * Reason: 🧠
+      * perform [minimal version selection](#minimal-version-selection)🧠
+      * UNNEEDED (_Example:_ after an upgrade)
+        * -> run [`go mod tidy`](#go-mod-tidy) 
 
 ### Checksum database {#checksum-database}
 
-The checksum database is a global source of `go.sum` lines. The `go` command can
-use this in many situations to detect misbehavior by proxies or origin servers.
+* == 👀global source of "go.sum" lines👀
+  * uses
+    * detect misbehavior -- by -- proxies OR origin servers
+  * allows for
+    * global consistency
+      * Reason: 🧠 ALTHOUGH module's author alters the tags | their repository -> specific version's bits associated do NOT change🧠 
+    * reliability -- for -- ALL publicly AVAILABLE module versions
+  * served -- by -- [sum.golang.org](https://sum.golang.org)
+    * == Google
+    * [Transparent Log](https://research.swtch.com/tlog)
+      * == "go.sum"'s “Merkle Tree” hashes
+        * backed -- by -- [Trillian](https://github.com/google/trillian)
+  * `go` command interacts -- ,via [Proposal: Secure the Public Go Module Ecosystem](https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md#checksum-database), with -- it
 
-The checksum database allows for global consistency and reliability for all
-publicly available module versions. It makes untrusted proxies possible since
-they can't serve the wrong code without it going unnoticed. It also ensures
-that the bits associated with a specific version do not change from one day to
-the next, even if the module's author subsequently alters the tags in their
-repository.
+* queries / checksum database MUST respond to
+  * `$base`
+    * == checksum database URL's path portion
+  * `$module`
+    * == module path
+    * [case-encoded](https://pkg.go.dev/golang.org/x/mod/module#EscapePath)
+      * _Example:_ modules `example.com/M` is encoded -- as -- `example.com/!m`
+      * Reason: 🧠| serve from case-insensitive file systems, avoid ambiguity🧠
+  * `$version`
+    * == version
+    * [case-encoded](https://pkg.go.dev/golang.org/x/mod/module#EscapePath)
+      * _Example:_ modules `example.com/M` is encoded -- as -- `example.com/!m`
+      * Reason: 🧠| serve from case-insensitive file systems, avoid ambiguity🧠
+  * _Example:_ if the checksum database URL == `https://sum.golang.org` & client request record / module `golang.org/x/text` | version `v0.3.2`
+    * -> client would send a `GET` request `https://sum.golang.org/lookup/golang.org/x/text@v0.3.2`
+  * `[]`
+    * == OPTIONAL
 
-The checksum database is served by [sum.golang.org](https://sum.golang.org),
-which is run by Google. It is a [Transparent
-Log](https://research.swtch.com/tlog) (or “Merkle Tree”) of `go.sum` line
-hashes, which is backed by [Trillian](https://github.com/google/trillian). The
-main advantage of a Merkle tree is that independent auditors can verify that it
-hasn't been tampered with, so it is more trustworthy than a simple database.
+| Path | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+|------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `$base/latest` | TODO: Returns a signed, encoded tree description for the latest log. This signed description is in the form of a [note](https://pkg.go.dev/golang.org/x/mod/sumdb/note), which is text that has been signed by one or more server keys and can be verified using the server's public key. The tree description provides the size of the tree and the hash of the tree head at that size. This encoding is described in [`golang.org/x/mod/sumdb/tlog#FormatTree`](https://pkg.go.dev/golang.org/x/mod/sumdb/tlog#FormatTree). |
+| `$base/lookup/$module@$version` | Returns the log record number for the entry about `$module` at `$version`, followed by the data for the record (that is, the `go.sum` lines for `$module` at `$version`) and a signed, encoded tree description that contains the record.                                                                                                                                                                                                                                                                                     |
+| `$base/tile/$H/$L/$K[.p/$W]` | Returns a [log tile](https://research.swtch.com/tlog#serving_tiles), which is a set of hashes that make up a section of the log. Each tile is defined in a two-dimensional coordinate at tile level `$L`, `$K`th from the left, with a tile height of `$H`. The optional `.p/$W` suffix indicates a partial log tile with only `$W` hashes. Clients must fall back to fetching the full tile if a partial tile is not found.                                                                                                  |
+| `$base/tile/$H/data/$K[.p/$W]` | Returns the record data for the leaf hashes in `/tile/$H/0/$K[.p/$W]` (with a literal `data` path element).                                                                                                                                                                                                                                                                                                                                                                                                                   |
 
-The `go` command interacts with the checksum database using the protocol
-originally outlined in [Proposal: Secure the Public Go Module
-Ecosystem](https://go.googlesource.com/proposal/+/master/design/25530-sumdb.md#checksum-database).
-
-The table below specifies queries that the checksum database must respond to.
-For each path, `$base` is the path portion of the checksum database URL,
-`$module` is a module path, and `$version` is a version. For example, if the
-checksum database URL is `https://sum.golang.org`, and the client is requesting
-the record for the module `golang.org/x/text` at version `v0.3.2`, the client
-would send a `GET` request for
-`https://sum.golang.org/lookup/golang.org/x/text@v0.3.2`.
-
-To avoid ambiguity when serving from case-insensitive file systems,
-the `$module` and `$version` elements are
-[case-encoded](https://pkg.go.dev/golang.org/x/mod/module#EscapePath)
-by replacing every uppercase letter with an exclamation mark followed by the
-corresponding lower-case letter. This allows modules `example.com/M` and
-`example.com/m` to both be stored on disk, since the former is encoded as
-`example.com/!m`.
-
-Parts of the path surrounded by square brackets, like `[.p/$W]` denote optional
-values.
-
-<table class="ModTable">
-  <thead>
-    <tr>
-      <th>Path</th>
-      <th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><code>$base/latest</code></td>
-      <td>
-        Returns a signed, encoded tree description for the latest log. This
-        signed description is in the form of a
-        <a href="https://pkg.go.dev/golang.org/x/mod/sumdb/note">note</a>,
-        which is text that has been signed by one or more server keys and can
-        be verified using the server's public key. The tree description
-        provides the size of the tree and the hash of the tree head at that
-        size. This encoding is described in
-        <code><a href="https://pkg.go.dev/golang.org/x/mod/sumdb/tlog#FormatTree">
-        golang.org/x/mod/sumdb/tlog#FormatTree</a></code>.
-      </td>
-    </tr>
-    <tr>
-    <tr>
-      <td><code>$base/lookup/$module@$version</code></td>
-      <td>
-        Returns the log record number for the entry about <code>$module</code>
-        at <code>$version</code>, followed by the data for the record (that is,
-        the <code>go.sum</code> lines for <code>$module</code> at
-        <code>$version</code>) and a signed, encoded tree description that
-        contains the record.
-      </td>
-    </tr>
-    <tr>
-    <tr>
-      <td><code>$base/tile/$H/$L/$K[.p/$W]</code></td>
-      <td>
-        Returns a [log tile](https://research.swtch.com/tlog#serving_tiles),
-        which is a set of hashes that make up a section of the log. Each tile
-        is defined in a two-dimensional coordinate at tile level
-        <code>$L</code>, <code>$K</code>th from the left, with a tile height of
-        <code>$H</code>. The optional <code>.p/$W</code> suffix indicates a
-        partial log tile with only <code>$W</code> hashes. Clients must fall
-        back to fetching the full tile if a partial tile is not found.
-      </td>
-    </tr>
-    <tr>
-    <tr>
-      <td><code>$base/tile/$H/data/$K[.p/$W]</code></td>
-      <td>
-        Returns the record data for the leaf hashes in
-        <code>/tile/$H/0/$K[.p/$W]</code> (with a literal <code>data</code> path
-        element).
-      </td>
-    </tr>
-    <tr>
-  </tbody>
-</table>
 
 If the `go` command consults the checksum database, then the first
 step is to retrieve the record data through the `/lookup` endpoint. If the
@@ -4576,8 +4544,11 @@ module graph by omitting transitive dependencies of modules that specify `go
 1.17` or higher. See [Module graph pruning](#graph-pruning).
 
 <a id="glos-module-path"></a>
-**module path:** A path that identifies a module and acts as a prefix for
-package import paths within the module. For example, `"golang.org/x/net"`.
+* **module path**
+  * == path / 👀identifies a module👀
+  * | module,
+    * package import paths' prefix
+      * _Example:_ `"golang.org/x/net"`
 
 <a id="glos-module-proxy"></a>
 **module proxy:** A web server that implements the [`GOPROXY`
