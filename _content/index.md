@@ -24,4 +24,3 @@ summary: Go is an open source programming language that makes it simple to build
 
 * [self-learn](menus.yaml)
 * [in-person trainings](learn/training.yaml)
-
