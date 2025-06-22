@@ -15,10 +15,11 @@ set fixed-width phrases with non-fixed-width spaces, as in
 
 ## Introduction to Go 1.23 {#introduction}
 
-The latest Go release, version 1.23, arrives six months after [Go 1.22](/doc/go1.22).
-Most of its changes are in the implementation of the toolchain, runtime, and libraries.
-As always, the release maintains the Go 1 [promise of compatibility](/doc/go1compat).
-We expect almost all Go programs to continue to compile and run as before.
+* MOST changes are about
+  * implementation of the toolchain,
+  * runtime,
+  * libraries
+* Go 1 [promise of compatibility](/doc/go1compat)
 
 ## Changes to the language {#language}
 
