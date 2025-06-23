@@ -1,14 +1,14 @@
 # `go function(argumentsToPass)` — goroutine —
 * := thread lightweight / managed by Go runtime
-  * ⚠️ run in the same address space ⚠️ -- TODO: How to check?
+  * ⚠️ run | SAME address space ⚠️ -- TODO: How to check?
     * → access to shared memory — must be — synchronized
-* `argumentsToPass` are evaluated in the 👁️ current 👁️ goroutine
-* `function(argumentsToPass)` is executed in the 👁️ NEW goroutine 👁️
+* `argumentsToPass` are evaluated | 👁️ current 👁️ goroutine
+* `function(argumentsToPass)` is executed | 👁️ NEW goroutine 👁️
 * `for { select { case1: .. case2: .. }}`
   * `select` allows
     * ⚠️ blocking the goroutine till 1 of the cases can run ⚠️
-      * == wait on multiple operations
-      * if multiple are ready → 👁️ choose 1 randomly 👁️
+      * == wait | MULTIPLE operations
+      * if MULTIPLE are ready → 👁️ choose 1 randomly 👁️
   * `default`
     * if there is NO other case ready → it’s run 👁️ NO blocking 👁️
 * `go run goroutines.go` & `go run select.go` & `go run default-selection.go`
@@ -17,12 +17,14 @@
 * Check golang repo under '../sync/mutex'
 
 # `chan` — channel —
-* := typed conduit which
+* := typed conduit/pipe which
   * `channelVariable <- valueToSend`
-    * the channel receive valueS
+    * the channel receive `valueToSend`
   * `assignToAVariable, boolVariable <- channelVariable`
     * the channel send valueS 
-    * 👁️the goroutine with this statement waits for receiving it 👁️
+    * 👁`goroutine` | this statement runs, 
+      * ⭐️== ALL executions run | goroutine⭐️
+      * waits for receiving the value 👁️
     * `boolVariable`
       * if `true` == channel can send more values
       * if `false` == channel is closed == NO more values will be sent

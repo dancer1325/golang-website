@@ -25,11 +25,11 @@
 # `type interfaceName interface` -- interface type --
 * := set of method signatures
 * ⚠️ if a variable implements interface’s methods → that interface type can hold it ⚠️
-  * 🧠 although at run time the value stored in the interface variable could change type, statically it’s typed 🧠
+  * 🧠 although | run-time, interface variable's value could change type, statically it’s typed 🧠
 * ⚠️ if a type implements interface’s methods → that interface is implemented ⚠️
-  * NOT `implements` keyword exist
+  * ❌`implements` keyword NOT exist❌
   * 👁️ implicit implementation 👁️
-    * == implementation can be delegated to another package
+    * == implementation can be delegated to ANOTHER package
 * `go run intefaces.go` & `go run interfaces-are-satisfied-implictly.go`
 
 # interface values

@@ -35,25 +35,18 @@ all of which you
 should read first.
 </p>
 
-<p>
-Note added January, 2022:
-This document was written for Go's
-release in 2009, and has not been updated significantly since.
-Although it is a good guide to understand how to use the language
-itself, thanks to the stability of the language, it says little
-about the libraries and nothing about significant changes to the
-Go ecosystem since it was written, such as the build system, testing,
-modules, and polymorphism.
-There are no plans to update it, as so much has happened and a large
-and growing set of documents, blogs, and books do a fine job of
-describing modern Go usage.
-Effective Go continues to be useful, but the reader should
-understand it is far from a complete guide.
-See <a href="/issue/28782">issue
-28782</a> for context.
-</p>
+* | January, 2022
+  * this document was written | Go's release, in 2009
+  * NOT updated significantly
+  * this guide
+    * NOT useful for
+      * libraries
+      * Go ecosystem 
+    * useful for
+      * how to use the language 
+  * see [28782](https://github.com/golang/go/issues/28782)
 
-<h3 id="examples">Examples</h3>
+## Examples
 
 <p>
 The <a href="/src/">Go package sources</a>
@@ -232,31 +225,21 @@ if owner != user {
 }
 </pre>
 
-<h3 id="interface-names">Interface names</h3>
+## Interface names
 
-<p>
-By convention, one-method interfaces are named by
-the method name plus an -er suffix or similar modification
-to construct an agent noun: <code>Reader</code>,
-<code>Writer</code>, <code>Formatter</code>,
-<code>CloseNotifier</code> etc.
-</p>
+* 1-method interfaces' naming
+  * == "methodName" + "-er"
+    * Reason: 🧠construct an agent noun🧠
+    * _Example:_ Reader, Writer
 
-<p>
-There are a number of such names and it's productive to honor them and the function
-names they capture.
-<code>Read</code>, <code>Write</code>, <code>Close</code>, <code>Flush</code>,
-<code>String</code> and so on have
-canonical signatures and meanings.  To avoid confusion,
-don't give your method one of those names unless it
-has the same signature and meaning.
-Conversely, if your type implements a method with the
-same meaning as a method on a well-known type,
-give it the same name and signature;
-call your string-converter method <code>String</code> not <code>ToString</code>.
-</p>
+* "Read", "Write", "Close", "Flush", "String", ... 
+  * canonical signatures & meanings
+  * use properly
 
-<h3 id="mixed-caps">MixedCaps</h3>
+* if your type implements a method / meaning == well-known type's method -> give SAME name & signature
+  * _Example:_ string-converter method would be "String", NOT "ToString"
+
+## MixedCaps
 
 <p>
 Finally, the convention in Go is to use <code>MixedCaps</code>
@@ -1347,24 +1330,26 @@ for i := range picture {
 }
 </pre>
 
-<h3 id="maps">Maps</h3>
+## Maps
 
-<p>
-Maps are a convenient and powerful built-in data structure that associate
-values of one type (the <em>key</em>) with values of another type
-(the <em>element</em> or <em>value</em>).
-The key can be of any type for which the equality operator is defined,
-such as integers,
-floating point and complex numbers,
-strings, pointers, interfaces (as long as the dynamic type
-supports equality), structs and arrays.
-Slices cannot be used as map keys,
-because equality is not defined on them.
-Like slices, maps hold references to an underlying data structure.
-If you pass a map to a function
-that changes the contents of the map, the changes will be visible
-in the caller.
-</p>
+* Maps
+  * == built-in data structure /
+    * convenient
+    * powerful
+    * values of one type (`key`) are -- associated with -- values of another type (`element` OR `value`)
+    
+    The key can be of any type for which the equality operator is defined,
+    such as integers,
+    floating point and complex numbers,
+    strings, pointers, interfaces (as long as the dynamic type
+    supports equality), structs and arrays.
+    Slices cannot be used as map keys,
+    because equality is not defined on them.
+    Like slices, maps hold references to an underlying data structure.
+    If you pass a map to a function
+    that changes the contents of the map, the changes will be visible
+    in the caller.
+
 <p>
 Maps can be constructed using the usual composite literal syntax
 with colon-separated key-value pairs,
@@ -2663,25 +2648,22 @@ is ever used.
 
 # Concurrency
 
-<h3 id="sharing">Share by communicating</h3>
+## Share by communicating
 
-<p>
-Concurrent programming is a large topic and there is space only for some
-Go-specific highlights here.
-</p>
-<p>
-Concurrent programming in many environments is made difficult by the
-subtleties required to implement correct access to shared variables.  Go encourages
-a different approach in which shared values are passed around on channels
-and, in fact, never actively shared by separate threads of execution.
-Only one goroutine has access to the value at any given time.
-Data races cannot occur, by design.
-To encourage this way of thinking we have reduced it to a slogan:
-</p>
-<blockquote>
-Do not communicate by sharing memory;
-instead, share memory by communicating.
-</blockquote>
+* Concurrent programming
+  * COMMON problem
+    * implement correct access -- to -- shared variables
+  * Go's approach
+    * ⭐️shared values
+      * are passed -- through -- channels⭐️
+      * NEVER ACTIVELY shared -- by -- separate goroutine
+        * == 1! goroutine has access -- to the -- value | ANY given time⭐️
+    * slogan
+      ```
+      Do not communicate by sharing memory;
+      instead, share memory by communicating.
+      ```  
+
 <p>
 This approach can be taken too far.  Reference counts may be best done
 by putting a mutex around an integer variable, for instance.  But as a
@@ -2699,68 +2681,68 @@ Communicating Sequential Processes (CSP),
 it can also be seen as a type-safe generalization of Unix pipes.
 </p>
 
-<h3 id="goroutines">Goroutines</h3>
+## Goroutines
 
-<p>
-They're called <em>goroutines</em> because the existing
-terms&mdash;threads, coroutines, processes, and so on&mdash;convey
-inaccurate connotations.  A goroutine has a simple model: it is a
-function executing concurrently with other goroutines in the same
-address space.  It is lightweight, costing little more than the
-allocation of stack space.
-And the stacks start small, so they are cheap, and grow
-by allocating (and freeing) heap storage as required.
-</p>
-<p>
-Goroutines are multiplexed onto multiple OS threads so if one should
-block, such as while waiting for I/O, others continue to run.  Their
-design hides many of the complexities of thread creation and
-management.
-</p>
-<p>
-Prefix a function or method call with the <code>go</code>
-keyword to run the call in a new goroutine.
-When the call completes, the goroutine
-exits, silently.  (The effect is similar to the Unix shell's
-<code>&amp;</code> notation for running a command in the
-background.)
-</p>
-<pre>
-go list.Sort()  // run list.Sort concurrently; don't wait for it.
-</pre>
-<p>
-A function literal can be handy in a goroutine invocation.
-</p>
-<pre>
-func Announce(message string, delay time.Duration) {
-    go func() {
-        time.Sleep(delay)
-        fmt.Println(message)
-    }()  // Note the parentheses - must call the function.
-}
-</pre>
-<p>
-In Go, function literals are closures: the implementation makes
-sure the variables referred to by the function survive as long as they are active.
-</p>
-<p>
-These examples aren't too practical because the functions have no way of signaling
-completion.  For that, we need channels.
-</p>
+* NOT reuse EXISTING terms (threads, coroutines, processes)
+  * Reason: 🧠inaccurate connotations🧠
 
-<h3 id="channels">Channels</h3>
+* Goroutine
+  * 's model
+    * | SAME address space, MULTIPLE goroutines executing concurrently 
+    * lightweight
+      * Reason: 🧠's costing (lightly)> allocation of stack space🧠
+      * stacks
+        * start small
+        * grow -- by -- allocating (& freeing) heap storage
+  * 👀are multiplexed | MULTIPLE OS threads👀
+    * == if 1 is blocked (_Example:_ waiting for I/O) -> others continue to run
 
-<p>
-Like maps, channels are allocated with <code>make</code>, and
-the resulting value acts as a reference to an underlying data structure.
-If an optional integer parameter is provided, it sets the buffer size for the channel.
-The default is zero, for an unbuffered or synchronous channel.
-</p>
-<pre>
-ci := make(chan int)            // unbuffered channel of integers
-cj := make(chan int, 0)         // unbuffered channel of integers
-cs := make(chan *os.File, 100)  // buffered channel of pointers to Files
-</pre>
+* `go functionName()` or `go methodName()`
+  * run the call | NEW goroutine
+    * == | Unix, shell's `&` notation
+      * == run a command | background
+  * | complete the call,
+    * the goroutine exits SILENTLY
+  ```
+  go list.Sort()
+  # list.Sort is run CONCURRENTLY == NOT wait for it 
+  ```
+  
+* function literal
+  * == closures
+    * == 👀as long as goroutine is active -> variables / referred to by the function, survive👀 
+  * uses
+    * | goroutine invocation
+      ```
+      func Announce(message string, delay time.Duration) {
+        
+        // `delay` & `message` surive TILL this goroutine is active
+        go func() {
+          time.Sleep(delay)
+          fmt.Println(message)
+        }()  // Note the parentheses - must call the function.
+      }
+      ```
+  * ❌NO way of signaling completion❌
+    * -> 👀use channels👀
+
+## Channels
+
+* `make(chan TypesToSenViaTheChannel, channelBufferSize)`
+  * create a channel /
+    * == reference -- to an -- underlying data structure 
+  * `make` ALSO valid | maps
+  * `channelBufferSize`
+    * OPTIONAL
+    * integer parameter
+      * by default, 0,
+        * == unbuffered or synchronous channel
+  ```
+  ci := make(chan int)            // unbuffered channel of integers
+  cj := make(chan int, 0)         // unbuffered channel of integers
+  cs := make(chan *os.File, 100)  // buffered channel of pointers to Files
+  ```
+
 <p>
 Unbuffered channels combine communication&mdash;the exchange of a value&mdash;with
 synchronization&mdash;guaranteeing that two calculations (goroutines) are in
@@ -2875,7 +2857,7 @@ func Serve(clientRequests chan *Request, quit chan bool) {
 }
 </pre>
 
-<h3 id="chan_of_chan">Channels of channels</h3>
+## Channels of channels
 <p>
 One of the most important properties of Go is that
 a channel is a first-class value that can be allocated and passed
@@ -2930,7 +2912,7 @@ code is a framework for a rate-limited, parallel, non-blocking RPC
 system, and there's not a mutex in sight.
 </p>
 
-<h3 id="parallel">Parallelization</h3>
+## Parallelization
 <p>
 Another application of these ideas is to parallelize a calculation
 across multiple CPU cores.  If the calculation can be broken into
@@ -3009,7 +2991,7 @@ For a discussion of the distinction, see the talk cited in
 <a href="/blog/concurrency-is-not-parallelism">this
 blog post</a>.
 
-<h3 id="leaky_buffer">A leaky buffer</h3>
+## A leaky buffer
 
 <p>
 The tools of concurrent programming can even make non-concurrent
