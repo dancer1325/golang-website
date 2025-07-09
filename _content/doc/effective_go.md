@@ -1807,6 +1807,7 @@ func init() {
       * _Example:_ [here](progs/eff_bytesize.go)
       * 's receiver
         * ❌NOT have to be a struct❌
+          * _Example:_ [here](progs/eff_bytesize.go)
 
 * TODO: 
 <p>
@@ -1822,12 +1823,14 @@ func (slice ByteSlice) Append(data []byte) []byte {
     // Body exactly the same as the Append function defined above.
 }
 </pre>
+
 <p>
 This still requires the method to return the updated slice.  We can
 eliminate that clumsiness by redefining the method to take a
 <i>pointer</i> to a <code>ByteSlice</code> as its receiver, so the
 method can overwrite the caller's slice.
 </p>
+
 <pre>
 func (p *ByteSlice) Append(data []byte) {
     slice := *p
