@@ -6,34 +6,25 @@
 
 # Introduction
 
-<p>
-Go is a new language.  Although it borrows ideas from
-existing languages,
-it has unusual properties that make effective Go programs
-different in character from programs written in its relatives.
-A straightforward translation of a C++ or Java program into Go
-is unlikely to produce a satisfactory result&mdash;Java programs
-are written in Java, not Go.
-On the other hand, thinking about the problem from a Go
-perspective could produce a successful but quite different
-program.
-In other words,
-to write Go well, it's important to understand its properties
-and idioms.
-It's also important to know the established conventions for
-programming in Go, such as naming, formatting, program
-construction, and so on, so that programs you write
-will be easy for other Go programmers to understand.
-</p>
+* goal
+  * how to write Go code
+    * clear
+    * idiomatic 
 
-<p>
-This document gives tips for writing clear, idiomatic Go code.
-It augments the <a href="/ref/spec">language specification</a>,
-the <a href="/tour/">Tour of Go</a>,
-and <a href="/doc/code.html">How to Write Go Code</a>,
-all of which you
-should read first.
-</p>
+* recommendations
+  * read PREVIOUSLY
+    * [Go language specification](https://go.dev/ref/spec)
+    * [Tour of Go](../tour)
+    * [How to Write Go Code?](HowToWriteGoCode)
+
+* Go
+  * NEW language
+  * 👀's some ideas borrowed -- from -- EXISTING languages👀
+  * recommendations
+    * 👀understand its 
+      * properties
+      * idioms
+      * conventions (naming, formatting, program construction, ...)👀
 
 * | January, 2022
   * this document was written | Go's release, in 2009
@@ -48,22 +39,11 @@ should read first.
 
 ## Examples
 
-<p>
-The <a href="/src/">Go package sources</a>
-are intended to serve not
-only as the core library but also as examples of how to
-use the language.
-Moreover, many of the packages contain working, self-contained
-executable examples you can run directly from the
-<a href="/">go.dev</a> web site, such as
-<a href="/pkg/strings/#example-Map">this one</a> (if
-necessary, click on the word "Example" to open it up).
-If you have a question about how to approach a problem or how something
-might be implemented, the documentation, code and examples in the
-library can provide answers, ideas and
-background.
-</p>
-
+* [Go package sources](https://go.dev/src/)
+  * == Go core library
+  * uses
+    * how to use the language
+      * _Example:_ [map](https://pkg.go.dev/strings#example-Map)
 
 # Formatting
 
@@ -331,7 +311,7 @@ there are no parentheses
 and the bodies must always be brace-delimited.
 </p>
 
-<h3 id="if">If</h3>
+## `if`
 
 <p>
 In Go a simple <code>if</code> looks like this:
@@ -399,7 +379,7 @@ codeUsing(f, d)
 </pre>
 
 
-<h3 id="redeclaration">Redeclaration and reassignment</h3>
+## Redeclaration and reassignment
 
 <p>
 An aside: The last example in the previous section demonstrates a detail of how the
@@ -454,7 +434,7 @@ is the same as the function body, even though they appear lexically outside the 
 that enclose the body.
 </p>
 
-<h3 id="for">For</h3>
+## `for`
 
 <p>
 The Go <code>for</code> loop is similar to&mdash;but not the same as&mdash;C's.
@@ -558,7 +538,7 @@ for i, j := 0, len(a)-1; i &lt; j; i, j = i+1, j-1 {
 }
 </pre>
 
-<h3 id="switch">Switch</h3>
+## `switch`
 
 <p>
 Go's <code>switch</code> is more general than C's.
@@ -666,7 +646,7 @@ func Compare(a, b []byte) int {
 }
 </pre>
 
-<h3 id="type_switch">Type switch</h3>
+## Type switch
 
 <p>
 A switch can also be used to discover the dynamic type of an interface
@@ -696,7 +676,7 @@ case *int:
 
 # Functions
 
-<h3 id="multiple-returns">Multiple return values</h3>
+## Multiple return values
 
 <p>
 One of Go's unusual features is that functions and methods
@@ -758,7 +738,7 @@ You could use it to scan the numbers in an input slice <code>b</code> like this:
     }
 </pre>
 
-<h3 id="named-results">Named result parameters</h3>
+## Named result parameters
 
 <p>
 The return or result "parameters" of a Go function can be given names and
@@ -799,7 +779,7 @@ func ReadFull(r Reader, buf []byte) (n int, err error) {
 }
 </pre>
 
-<h3 id="defer">Defer</h3>
+## Defer
 
 <p>
 Go's <code>defer</code> statement schedules a function call (the
@@ -935,7 +915,7 @@ example of its possibilities.
 
 # Data
 
-<h3 id="allocation_new">Allocation with <code>new</code></h3>
+## Allocation with `new`
 
 <p>
 Go has two allocation primitives, the built-in functions
@@ -989,7 +969,7 @@ p := new(SyncedBuffer)  // type *SyncedBuffer
 var v SyncedBuffer      // type  SyncedBuffer
 </pre>
 
-<h3 id="composite_literals">Constructors and composite literals</h3>
+## Constructors and composite literals
 
 <p>
 Sometimes the zero value isn't good enough and an initializing
@@ -1070,7 +1050,7 @@ s := []string      {Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
 m := map[int]string{Enone: "no error", Eio: "Eio", Einval: "invalid argument"}
 </pre>
 
-<h3 id="allocation_make">Allocation with <code>make</code></h3>
+## Allocation with `make`
 
 <p>
 Back to allocation.
@@ -1129,7 +1109,7 @@ To obtain an explicit pointer allocate with <code>new</code> or take the address
 of a variable explicitly.
 </p>
 
-<h3 id="arrays">Arrays</h3>
+## Arrays
 
 <p>
 Arrays are useful when planning the detailed layout of memory and sometimes
@@ -1177,7 +1157,7 @@ But even this style isn't idiomatic Go.
 Use slices instead.
 </p>
 
-<h3 id="slices">Slices</h3>
+## Slices
 
 <p>
 Slices wrap arrays to give a more general, powerful, and convenient
@@ -1264,7 +1244,7 @@ design, though, we need a little more information, so we'll return
 to it later.
 </p>
 
-<h3 id="two_dimensional_slices">Two-dimensional slices</h3>
+## Two-dimensional slices
 
 <p>
 Go's arrays and slices are one-dimensional.
@@ -1439,25 +1419,46 @@ from the map.
 delete(timeZone, "PDT")  // Now on Standard Time
 </pre>
 
-<h3 id="printing">Printing</h3>
+## Printing
 
-<p>
-Formatted printing in Go uses a style similar to C's <code>printf</code>
-family but is richer and more general. The functions live in the <code>fmt</code>
-package and have capitalized names: <code>fmt.Printf</code>, <code>fmt.Fprintf</code>,
-<code>fmt.Sprintf</code> and so on.  The string functions (<code>Sprintf</code> etc.)
-return a string rather than filling in a provided buffer.
-</p>
-<p>
-You don't need to provide a format string.  For each of <code>Printf</code>,
-<code>Fprintf</code> and <code>Sprintf</code> there is another pair
-of functions, for instance <code>Print</code> and <code>Println</code>.
-These functions do not take a format string but instead generate a default
-format for each argument. The <code>Println</code> versions also insert a blank
+* Go's printing
+  * vs C's `printf` family
+    * similar
+    * richer
+    * MORE general
+  * `fmt` package
+  * capitalized names
+    * `fmt.Printf`
+    * `fmt.Fprintf`
+    * `fmt.Sprintf`
+    * ...
+
+* string functions
+  * _Example:_ `Sprintf`
+  * return a string
+    * != C == fill | provided buffer
+    ```C
+    char buffer[100];  // you need to provide a buffer
+    sprintf(buffer, "Hello %s", name);  // fill in the provided buffer
+    ```
+    ```go
+    result := fmt.Sprintf("Hello %s", name)  // return directly NEW string
+    ```
+  * ❌NOT required to provide -- a -- format string❌
+  * / EACH formatted function (_Example:_ `Printf`, `Fprintf` & `Sprintf`), exist
+    * no formatted functions (_Example:_ `Print`, `Fprint` & `Sprint`)
+      * ❌NOT accept a format string❌
+      * generate a default format / EACH argument
+    * breaking line functions (_Example:_ `Println`, `Fprintln` & `Sprintln`)
+      * ❌NOT accept a format string❌
+      * generate a default format / EACH argument
+
+* TODO: The <code>Println</code> versions also insert a blank
 between arguments and append a newline to the output while
 the <code>Print</code> versions add blanks only if the operand on neither side is a string.
 In this example each line produces the same output.
-</p>
+
+
 <pre>
 fmt.Printf("Hello %d\n", 23)
 fmt.Fprint(os.Stdout, "Hello ", 23, "\n")
@@ -1661,7 +1662,7 @@ func Min(a ...int) int {
 }
 </pre>
 
-<h3 id="append">Append</h3>
+## Append
 <p>
 Now we have the missing piece we needed to explain the design of
 the <code>append</code> built-in function.  The signature of <code>append</code>
@@ -1713,44 +1714,43 @@ would be wrong; <code>y</code> is not of type <code>int</code>.
 
 # Initialization
 
-<p>
-Although it doesn't look superficially very different from
-initialization in C or C++, initialization in Go is more powerful.
-Complex structures can be built during initialization and the ordering
-issues among initialized objects, even among different packages, are handled
-correctly.
-</p>
+* Go initialization vs C or C++ initialization
+  * 👀MORE powerful👀
+    * Reason:🧠
+      * ALLOWED building complex structures
+      * | order initialized objects, NOT problem🧠
 
-<h3 id="constants">Constants</h3>
+## Constants
 
-<p>
-Constants in Go are just that&mdash;constant.
-They are created at compile time, even when defined as
-locals in functions,
-and can only be numbers, characters (runes), strings or booleans.
-Because of the compile-time restriction, the expressions
-that define them must be constant expressions,
-evaluatable by the compiler.  For instance,
-<code>1&lt;&lt;3</code> is a constant expression, while
-<code>math.Sin(math.Pi/4)</code> is not because
-the function call to <code>math.Sin</code> needs
-to happen at run time.
-</p>
+* ⚠️created | compile time,⚠️
+  * even defined -- as -- locals | functions
+  * -> expressions == constant expressions / evaluable -- by the -- compiler
+    ```go
+     1<<3                   # == constant expression
+    math.Sin(math.Pi/4)     # !=  constant expression -- Reason: math.Sin happens | run-time
+    ```
 
-<p>
-In Go, enumerated constants are created using the <code>iota</code>
-enumerator.  Since <code>iota</code> can be part of an expression and
-expressions can be implicitly repeated, it is easy to build intricate
-sets of values.
-</p>
-{{code "/doc/progs/eff_bytesize.go" `/^type ByteSize/` `/^\)/`}}
-<p>
+* ⚠️ONLY ALLOWED types⚠️
+  * numbers,
+  * characters (runes),
+  * strings 
+  * booleans
+
+* `iota` enumerator
+  * allows
+    * creating enumerated constants
+      * Reason:🧠
+        * `iota` can be -- part of an -- expression
+        * expressions can be IMPLICITLY repeated🧠
+
+* _Example:_ [here](progs/eff_bytesize.go)
+
 The ability to attach a method such as <code>String</code> to any
 user-defined type makes it possible for arbitrary values to format themselves
 automatically for printing.
 Although you'll see it most often applied to structs, this technique is also useful for
 scalar types such as floating-point types like <code>ByteSize</code>.
-</p>
+
 {{code "/doc/progs/eff_bytesize.go" `/^func.*ByteSize.*String/` `/^}/`}}
 <p>
 The expression <code>YB</code> prints as <code>1.00YB</code>,
@@ -1767,7 +1767,7 @@ the <code>String</code> method when it wants a string, and <code>%f</code>
 wants a floating-point value.
 </p>
 
-<h3 id="variables">Variables</h3>
+## Variables
 
 <p>
 Variables can be initialized just like constants but the
@@ -1781,7 +1781,7 @@ var (
 )
 </pre>
 
-<h3 id="init">The init function</h3>
+## The init function
 
 <p>
 Finally, each source file can define its own niladic <code>init</code> function to
@@ -1816,7 +1816,7 @@ func init() {
 
 # Methods
 
-<h3 id="pointers_vs_values">Pointers vs. Values</h3>
+## Pointers vs. Values
 <p>
 As we saw with <code>ByteSize</code>,
 methods can be defined for any named type (except a pointer or an interface);
@@ -1897,7 +1897,7 @@ is central to the implementation of <code>bytes.Buffer</code>.
 
 # Interfaces & OTHER types
 
-<h3 id="interfaces">Interfaces</h3>
+## Interfaces
 <p>
 Interfaces in Go provide a way to specify the behavior of an
 object: if something can do <em>this</em>, then it can be used
@@ -1920,7 +1920,7 @@ In this contrived example <code>Sequence</code> satisfies both.
 </p>
 {{code "/doc/progs/eff_sequence.go" `/^type/` "$"}}
 
-<h3 id="conversions">Conversions</h3>
+## Conversions
 
 <p>
 The <code>String</code> method of <code>Sequence</code> is recreating the

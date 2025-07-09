@@ -9,8 +9,8 @@ import "fmt"
 type ByteSize float64
 
 const (
-	_           = iota // ignore first value by assigning to blank identifier
-	KB ByteSize = 1 << (10 * iota)
+	_           = iota             // ignore first value by assigning to blank identifier
+	KB ByteSize = 1 << (10 * iota) // TODO:❓
 	MB
 	GB
 	TB
@@ -20,6 +20,7 @@ const (
 	YB
 )
 
+// add String() method | ByteSize
 func (b ByteSize) String() string {
 	switch {
 	case b >= YB:
@@ -39,7 +40,7 @@ func (b ByteSize) String() string {
 	case b >= KB:
 		return fmt.Sprintf("%.2fKB", b/KB)
 	}
-	return fmt.Sprintf("%.2fB", b)
+	return fmt.Sprintf("%.2fB", b) // Sprintf(T)	looks for T's String()
 }
 
 func main() {
