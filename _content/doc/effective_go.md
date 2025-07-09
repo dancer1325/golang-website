@@ -1799,11 +1799,16 @@ func init() {
 # Methods
 
 ## Pointers vs. Values
-<p>
-As we saw with <code>ByteSize</code>,
-methods can be defined for any named type (except a pointer or an interface);
-the receiver does not have to be a struct.
-</p>
+
+* methods
+  * can be defined | 
+    * ANY named type
+      * ⚠️EXCEPT to, pointer OR interface⚠️
+      * _Example:_ [here](progs/eff_bytesize.go)
+      * 's receiver
+        * ❌NOT have to be a struct❌
+
+* TODO: 
 <p>
 In the discussion of slices above, we wrote an <code>Append</code>
 function.  We can define it as a method on slices instead.  To do

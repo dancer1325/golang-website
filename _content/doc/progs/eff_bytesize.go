@@ -6,6 +6,7 @@ package main
 
 import "fmt"
 
+// ByteSize 	== type != struct
 type ByteSize float64
 
 const (
