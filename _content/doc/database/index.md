@@ -36,18 +36,21 @@ You'll find a complete list of drivers at the
 
 ### Functions to execute queries or make database changes {#functions}
 
-The `database/sql` package includes functions specifically designed for the
-kind of database operation you're executing. For example, while you can use
-`Query` or `QueryRow` to execute queries, `QueryRow` is designed for the case
-when you're expecting only a single row, omitting the overhead of returning
-an `sql.Rows` that includes only one row. You can use the `Exec` function
-to make database changes with SQL statements such as `INSERT`, `UPDATE`, or
-`DELETE`.
+* `database/sql` package
+  * 's functions' design
+    * database operation / you're executing
+      * _Example:_
+        * `Query` or `QueryRow`
+          * -- to -- execute queries
+        * `QueryRow`
+          * uses
+            * 1! expected row
+        * `Exec`
+          * make database changes -- via -- SQL statements (`INSERT`, `UPDATE`, or `DELETE`)
 
-For more, see the following:
-
-*   [Executing SQL statements that don't return data](/doc/database/change-data)
-*   [Querying for data](/doc/database/querying)
+* see ALSO
+  * [executing SQL statements / ❌NOT return data❌](change-data)
+  * [Querying for data](/doc/database/querying)
 
 ### Transactions {#transactions}
 
