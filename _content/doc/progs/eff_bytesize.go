@@ -21,6 +21,9 @@ const (
 )
 
 // add String() method | ByteSize
+// recommendation: use a format verb != string 	(_Example:_ `%f`)
+//
+//	Reason: avoid INDEFINITELY recurring
 func (b ByteSize) String() string {
 	switch {
 	case b >= YB:

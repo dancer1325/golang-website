@@ -1745,27 +1745,9 @@ would be wrong; <code>y</code> is not of type <code>int</code>.
 
 * _Example:_ [here](progs/eff_bytesize.go)
 
-The ability to attach a method such as <code>String</code> to any
-user-defined type makes it possible for arbitrary values to format themselves
-automatically for printing.
-Although you'll see it most often applied to structs, this technique is also useful for
-scalar types such as floating-point types like <code>ByteSize</code>.
-
-{{code "/doc/progs/eff_bytesize.go" `/^func.*ByteSize.*String/` `/^}/`}}
-<p>
-The expression <code>YB</code> prints as <code>1.00YB</code>,
-while <code>ByteSize(1e13)</code> prints as <code>9.09TB</code>.
-</p>
-
-<p>
-The use here of <code>Sprintf</code>
-to implement <code>ByteSize</code>'s <code>String</code> method is safe
-(avoids recurring indefinitely) not because of a conversion but
-because it calls <code>Sprintf</code> with <code>%f</code>,
-which is not a string format: <code>Sprintf</code> will only call
-the <code>String</code> method when it wants a string, and <code>%f</code>
-wants a floating-point value.
-</p>
+* | user-defined types or scalar types
+  * 👀if you define `String()` -> Go used it AUTOMATICALLY | print that value👀
+  * _Example:_ [`type ByteSize`](progs/eff_bytesize.go)
 
 ## Variables
 
