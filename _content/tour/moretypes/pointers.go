@@ -5,9 +5,9 @@ package main
 import "fmt"
 
 func main() {
-	// *string			type of the pointer, whose type of the value is string
+	// *string			type of the pointer / value's type == string
 	var d *string
-	// zero value of a pointer not declared -> nil
+	// zero value of a pointer == nil   -- Reason: NOT declared --
 	fmt.Println("d", d)
 
 	// types inferred
@@ -16,7 +16,7 @@ func main() {
 	// &operand -- generates a -> pointer of the operand
 	p := &i // -- generates a -> pointer of i /  holds the memory address of i
 	fmt.Println("p", p)
-	fmt.Println("*p", *p) // read i through the pointer
+	fmt.Println("*p", *p) // read i -- through the -- pointer
 	// pointers are NOT arithmetic
 	//p++
 
