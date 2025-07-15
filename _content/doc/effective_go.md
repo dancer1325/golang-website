@@ -917,57 +917,28 @@ example of its possibilities.
 
 ## Allocation with `new`
 
-<p>
-Go has two allocation primitives, the built-in functions
-<code>new</code> and <code>make</code>.
-They do different things and apply to different types, which can be confusing,
-but the rules are simple.
-Let's talk about <code>new</code> first.
-It's a built-in function that allocates memory, but unlike its namesakes
-in some other languages it does not <em>initialize</em> the memory,
-it only <em>zeros</em> it.
-That is,
-<code>new(T)</code> allocates zeroed storage for a new item of type
-<code>T</code> and returns its address, a value of type <code>*T</code>.
-In Go terminology, it returns a pointer to a newly allocated zero value of type
-<code>T</code>.
-</p>
+* 👀built-in allocation primitive functions👀
+  * `new`
+  * `make`
 
-<p>
-Since the memory returned by <code>new</code> is zeroed, it's helpful to arrange
-when designing your data structures that the
-zero value of each type can be used without further initialization.  This means a user of
-the data structure can create one with <code>new</code> and get right to
-work.
-For example, the documentation for <code>bytes.Buffer</code> states that
-"the zero value for <code>Buffer</code> is an empty buffer ready to use."
-Similarly, <code>sync.Mutex</code> does not
-have an explicit constructor or <code>Init</code> method.
-Instead, the zero value for a <code>sync.Mutex</code>
-is defined to be an unlocked mutex.
-</p>
+* `new` vs `make`
+  * do DIFFERENT things
+  * apply | DIFFERENT types
 
-<p>
-The zero-value-is-useful property works transitively. Consider this type declaration.
-</p>
+* `new`
+  * allocates memory /
+    * ❌NOT initialize the memory❌
+    * 👀ONLY 0s it👀
+      * works transitively
+        * == if child useful 0's -> parent useful 0's 
+  * return its address == pointer
 
-<pre>
-type SyncedBuffer struct {
-    lock    sync.Mutex
-    buffer  bytes.Buffer
-}
-</pre>
-
-<p>
-Values of type <code>SyncedBuffer</code> are also ready to use immediately upon allocation
-or just declaration.  In the next snippet, both <code>p</code> and <code>v</code> will work
-correctly without further arrangement.
-</p>
-
-<pre>
-p := new(SyncedBuffer)  // type *SyncedBuffer
-var v SyncedBuffer      // type  SyncedBuffer
-</pre>
+* recommendations
+  * | design your data structures,
+    * 💡EACH type's 0 value can be used -- WITHOUT -- further initialization💡
+      * Reason: 🧠
+        * memory returned by `new` == 0
+        * user of data structure create it & get right to work🧠
 
 ## Constructors and composite literals
 
