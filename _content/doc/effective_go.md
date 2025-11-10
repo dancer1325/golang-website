@@ -3118,7 +3118,7 @@ error was of type <code>*os.PathError</code>, and then so is <code>e</code>,
 which we can examine for more information about the error.
 </p>
 
-<h3 id="panic">Panic</h3>
+## Panic
 
 <p>
 The usual way to report an error to a caller is to return an
@@ -3173,7 +3173,7 @@ func init() {
 }
 </pre>
 
-<h3 id="recover">Recover</h3>
+## Recover
 
 <p>
 When <code>panic</code> is called, including implicitly for run-time
