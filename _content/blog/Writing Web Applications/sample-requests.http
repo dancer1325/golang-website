@@ -1,0 +1,26 @@
+### http-sample -- without url path --
+GET {{host}}
+
+### http-sample -- with url path --
+GET {{host}}/Alfred
+
+### part2
+GET {{host}}/view/NameToLoadAndDisplay
+
+### notemplate -- display the file == part2 --
+GET {{host}}/view/NameToLoadAndDisplay
+
+### notemplate -- form to adjust the file --
+GET {{host}}/edit/NameToLoadAndDisplay
+
+### final-noerror -- display the file == part2 --
+GET {{host}}/view/NameToLoadAndDisplay
+
+### final-noerror -- form to adjust the file --
+GET {{host}}/edit/NameToLoadAndDisplay
+
+### part3-errorhandling -- visualize NO existing -- is redirected to /edit/
+GET {{host}}/view/NoExistingPage
+
+### final-template -- create a file via visiting /edit/* and redirect to /view/*
+GET {{host}}/edit/createdViaEditForm

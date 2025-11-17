@@ -228,7 +228,7 @@ To collect coverage data for a program, build it with `go`
 binary with the environment variable `GOCOVERDIR` set
 to an output directory for coverage profiles.
 See the
-['coverage for integration tests' landing page](/testing/coverage) for more on how to get started.
+['coverage for integration tests' landing page](/doc/build-cover) for more on how to get started.
 For details on the design and implementation, see the
 [proposal](/issue/51430).
 
@@ -350,7 +350,7 @@ a newer Go toolchain there).
 In the future, we plan to move the bootstrap toolchain forward approximately once a year,
 and in particular we expect that Go 1.22 will require the final point release of Go 1.20 for bootstrap.
 
-## Core library {#library}
+## Standard library {#library}
 
 ### New crypto/ecdh package {#crypto_ecdh}
 

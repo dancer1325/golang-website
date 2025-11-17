@@ -58,7 +58,7 @@ func typeAssertions() (interface{}, error) { // OMIT
 	empty = w // interface value -> (tty, *os.File)
 	// type assertion NOT needed because w statically satisfies the empty interface
 	// STOP OMIT
-	return empty, err
+	return empty, nil
 }
 
 func main() {

@@ -23,9 +23,10 @@ If your code will be executing the same SQL statement repeatedly, consider
 using a prepared statement. For more, see
 [Using prepared statements](/doc/database/prepared-statements).
 
-**Caution:** Don't use string formatting functions such as `fmt.Sprintf` to
-assemble an SQL statement! You could introduce an SQL injection risk. For more,
-see [Avoiding SQL injection risk](/doc/database/sql-injection).
+* recommendations
+    * ❌if you need to assemble an SQL statement -> NOT use string formatting functions (_Example:_ `fmt.Sprintf`)❌
+        * Reason: 🧠you could introduce an SQL injection risk🧠
+        * see [Avoiding SQL injection risk](sql-injection)
 
 ### Querying for a single row {#single_row}
 
@@ -147,7 +148,7 @@ func albumsByArtist(artist string) ([]Album, error) {
 			&alb.Price, &alb.Quantity); err != nil {
 			return albums, err
 		}
-		albums = append(albums, album)
+		albums = append(albums, alb)
 	}
 	if err = rows.Err(); err != nil {
 		return albums, err

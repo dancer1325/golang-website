@@ -1,16 +1,17 @@
 # Pointers
-* := types which
-  * hold memory address of a value
-  * ⚠️ are NOT arithmetic ⚠️
+* := types /
+  * hold 💡value's memory address💡 
+  * ⚠️ NOT arithmetic ⚠️
     * Note: ≠ C
   * `*`
     * `*T`
-      * type of the pointer, whose type of the value is `T`
-    * `*pointerValue` = `value` -- "dereferencing" OR "indirecting" —
+      * ⭐️declare a pointer⭐️ / 
+        * `T` == type of the value 
+        * ⚠️!= `*pointerValue`⚠️ 
+        * 👀by default (== NOT initialized), 's value == `nil`👀 
+    * ⭐️`*pointerValue` = `value`⭐️ -- "dereferencing" OR "indirecting" —
   * `&i`
-    * operand `i` — generates a → pointer of `i`
-  * `nil`
-    * zero value of a pointer
+    * ⭐️operand `i` — generates a → pointer of `i`⭐️
 * `go run pointers.go`
 
 # `type structName struct { fields }` — structs —

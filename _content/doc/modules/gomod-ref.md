@@ -2,54 +2,48 @@
   "Title": "go.mod file reference"
 }-->
 
-Each Go module is defined by a go.mod file that describes the module's
-properties, including its dependencies on other modules and on versions of Go.
+* "go.mod"
+  * define a Go module
+    * 's properties
+    * 's dependencies -- on -- OTHER modules
+  * generated -- via -- [`go mod init`](../../ref/mod.md#go-mod-init-go-mod-init)
 
-These properties include:
+* Go module's properties
+  * `module modulePath`
+    * == CURRENT module's **module path** 
+      * location | module can be downloaded -- by -- Go tools
+      * \+ module's version number == unique identifier
+      * uses
+        * ⚠️ALL module's packages' package path's prefix ⚠️
+      * see [Go Modules Reference](../../ref/mod.md)
+  * `go someGoVersion`
+    * MINIMUM **version of Go** / required -- by the -- CURRENT module
+  * `require (...)`
+    * OTHER **modules required**'s MINIMUM versions 
+  * instructions
+    * OPTIONALLY
+    * allows
+      * `replace moduleToBeReplaced => moduleAsReplacement`
+        * `require` module is replaced -- with -- ANOTHER module version OR local directory
+      * `exclude requiredModule versionToExclude`
+        * exclude a required module's specific version
 
-* The current module's **module path**. This should be a location from which
-the module can be downloaded by Go tools, such as the module code's
-repository location. This serves as a unique identifier, when combined
-with the module's version number. It is also the prefix of the package path for
-all packages in the module. For more about how Go locates the module, see the
-<a href="/ref/mod#vcs-find">Go Modules Reference</a>.
-* The minimum **version of Go** required by the current module.
-* A list of minimum versions of other **modules required** by the current module.
-* Instructions, optionally, to **replace** a required module with another
-  module version or a local directory, or to **exclude** a specific version of
-  a required module.
+* _Example:_ creates a "go.mod" / module's module path == "example/mymodule"
 
-Go generates a go.mod file when you run the [`go mod init`
-command](/ref/mod#go-mod-init). The following example creates a go.mod file,
-setting the module's module path to example/mymodule:
+  ```
+  $ go mod init example/mymodule
+  ```
 
-```
-$ go mod init example/mymodule
-```
+* `go` commands
+  * allows
+    * manage dependencies / 👀consistent to "go.mod"👀
 
-Use `go` commands to manage dependencies. The commands ensure that the
-requirements described in your go.mod file remain consistent and the content of
-your go.mod file is valid. These commands include the [`go get`](/ref/mod#go-get)
-and [`go mod tidy`](/ref/mod#go-mod-tidy) and [`go mod edit`](/ref/mod#go-mod-edit)
-commands.
-
-For reference on `go` commands, see [Command go](/cmd/go/).
-You can get help from the command line by typing `go help` _command-name_, as
-with `go help mod tidy`.
-
-**See also**
-
-* Go tools make changes to your go.mod file as you use them to manage
-  dependencies. For more, see [Managing dependencies](/doc/modules/managing-dependencies).
-* For more details and constraints related to go.mod files, see the [Go modules
-  reference](/ref/mod#go-mod-file).
+* see
+  * [Go modules reference](../../ref/mod.md#gomod-files-go-mod-file)
 
 ## Example {#example}
 
-A go.mod file includes directives as shown in the following example. These are
-described elsewhere in this topic.
-
-```
+```.mod,title=go.mod
 module example.com/mymodule
 
 go 1.14
@@ -66,38 +60,31 @@ exclude example.com/thismodule v1.3.0
 
 ## module {#module}
 
-Declares the module's module path, which is the module's unique identifier
-(when combined with the module version number). The module path becomes the
-import prefix for all packages the module contains.
-
-For more, see [`module` directive](/ref/mod#go-mod-file-module) in the
-Go Modules Reference.
+* see [`module` directive](../../ref/mod.md#module-directive-go-mod-file-module)
 
 ### Syntax {#module-syntax}
 
-<pre>module <var>module-path</var></pre>
+`module module-path`
 
-<dl>
-    <dt>module-path</dt>
-    <dd>The module's module path, usually the repository location from which
-      the module can be downloaded by Go tools. For module versions v2 and
-      later, this value must end with the major version number, such as
-      <code>/v2</code>.</dd>
-</dl>
+* `module-path`
+  * module's module path
+  * values
+    * (NORMALLY) repository location | module can be downloaded -- by -- Go tools
+    * | module v2+,
+      * ⚠️value MUST end -- with the -- major version number⚠️ 
+        * _Example:_ /v2
 
 ### Examples {#module-examples}
 
-The following examples substitute `example.com` for a repository domain from
-which the module could be downloaded.
-
-* Module declaration for a v0 or v1 module:
-  ```
-  module example.com/mymodule
-  ```
-* Module path for a v2 module:
-  ```
-  module example.com/mymodule/v2
-  ```
+* _Examples:_ substitute "example.com"
+  * v0 OR v1 module's module declaration 
+    ```
+    module example.com/mymodule
+    ```
+  * v2 module's module path 
+    ```
+    module example.com/mymodule/v2
+    ```
 
 ### Notes {#module-notes}
 
@@ -134,36 +121,34 @@ go mod init <company-name>/stringtools
 
 ## go {#go}
 
-Indicates that the module was written assuming the semantics of the Go version
-specified by the directive.
+* Go version / 
+  * 👀used | write the module👀 
 
-For more, see [`go` directive](/ref/mod#go-mod-file-go) in the
-Go Modules Reference.
+* see [`go` directive](../../ref/mod.md#go-mod-file-go)
 
 ### Syntax {#go-syntax}
 
-<pre>go <var>minimum-go-version</var></pre>
+`go minimum-go-version`
 
-<dl>
-    <dt>minimum-go-version</dt>
-    <dd>The minimum version of Go required to compile packages in this module.</dd>
-</dl>
+* `minimum-go-version`
+  * == MINIMUM Go version -- to -- compile packages | this module
 
 ### Examples {#go-examples}
 
-* Module must run on Go version 1.14 or later:
+* module MUST run | Go v1.14+
   ```
   go 1.14
   ```
 
 ### Notes {#go-notes}
 
-The `go` directive sets the minimum version of Go required to use this module.
-Before Go 1.21, the directive was advisory only; now it is a mandatory requirement:
-Go toolchains refuse to use modules declaring newer Go versions.
-
-The `go` directive is an input into selecting which Go toolchain to run.
-See “[Go toolchains](/doc/toolchain)” for details.
+* `go` directive
+  * | Go 1.21-,
+    * advisory
+  * | Go 1.21+,
+    * ⚠️MANDATORY⚠️
+    * 1! declare it == NOT declare >1
+  * see [Go toolchains](../../doc/toolchain)
 
 The `go` directive affects use of new language features:
 
@@ -177,43 +162,47 @@ The `go` directive affects use of new language features:
   numeric literal `1_000_000`. If that package is built with Go 1.12, the
   compiler notes that the code is written for Go 1.13.
 
-The `go` directive also affects the behavior of the `go` command:
-
-* At `go 1.14` or higher, automatic [vendoring](/ref/mod#vendoring) may be
-  enabled.  If the file `vendor/modules.txt` is present and consistent with
-  `go.mod`, there is no need to explicitly use the `-mod=vendor` flag.
-* At `go 1.16` or higher, the `all` package pattern matches only packages
-  transitively imported by packages and tests in the [main
-  module](/ref/mod#glos-main-module). This is the same set of packages retained
-  by [`go mod vendor`](/ref/mod#go-mod-vendor) since modules were introduced. In
-  lower versions, `all` also includes tests of packages imported by packages in
-  the main module, tests of those packages, and so on.
-* At `go 1.17` or higher:
-   * The `go.mod` file includes an explicit [`require`
-     directive](/ref/mod#go-mod-file-require) for each module that provides any
-     package transitively imported by a package or test in the main module. (At
-     `go 1.16` and lower, an indirect dependency is included only if [minimal
-     version selection](/ref/mod#minimal-version-selection) would otherwise
-     select a different version.) This extra information enables [module graph
-     pruning](/ref/mod#graph-pruning) and [lazy module
-     loading](/ref/mod#lazy-loading).
-   * Because there may be many more `// indirect` dependencies than in previous
-     `go` versions, indirect dependencies are recorded in a separate block
-     within the `go.mod` file.
-   * `go mod vendor` omits `go.mod` and `go.sum` files for vendored
-     dependencies. (That allows invocations of the `go` command within
-     subdirectories of `vendor` to identify the correct main module.)
-   * `go mod vendor` records the `go` version from each dependency's `go.mod`
-     file in `vendor/modules.txt`.
-* At `go 1.21` or higher:
-   * The `go` line declares a required minimum version of Go to use with this module.
-   * The `go` line must be greater than or equal to the `go` line of all dependencies.
-   * The `go` command no longer attempts to maintain compatibility with the previous older version of Go.
-   * The `go` command is more careful about keeping checksums of `go.mod` files in the `go.sum` file.
+* affects the `go` command's behavior
+  * TODO: At `go 1.14` or higher, automatic [vendoring](/ref/mod#vendoring) may be
+    enabled.  If the file `vendor/modules.txt` is present and consistent with
+    `go.mod`, there is no need to explicitly use the `-mod=vendor` flag.
+  * At `go 1.16` or higher, the `all` package pattern matches only packages
+    transitively imported by packages and tests in the [main
+    module](/ref/mod#glos-main-module). This is the same set of packages retained
+    by [`go mod vendor`](/ref/mod#go-mod-vendor) since modules were introduced. In
+    lower versions, `all` also includes tests of packages imported by packages in
+    the main module, tests of those packages, and so on.
+  * | `go 1.17`+
+     * "go.mod" includes an EXPLICIT [`require` directive](../../ref/mod.md#require-directive-go-mod-file-require) / EACH module
+       * -> enables 
+         * [module graph pruning](../../ref/mod.md#module-graph-pruning-graph-pruning)
+         * [lazy module loading](../../ref/mod.md#lazy-module-loading-lazy-loading) 
+     * vs `go 1.16`-,
+       * EXIST MANY MORE `// indirect` dependencies than in previous 
+  * | `go 1.16`-,
+    * ⚠️ONLY if [minimal version selection](../../ref/mod.md#minimal-version-selection-mvs-minimal-version-selection) -> include INDIRECT dependency⚠️
+    * `go mod vendor` omits `go.mod` and `go.sum` files for vendored
+      dependencies. (That allows invocations of the `go` command within
+      subdirectories of `vendor` to identify the correct main module.)
+    * `go mod vendor` records the `go` version from each dependency's `go.mod`
+      file in `vendor/modules.txt`.
+  * At `go 1.21` or higher:
+     * The `go` line declares a required minimum version of Go to use with this module.
+     * The `go` line must be greater than or equal to the `go` line of all dependencies.
+     * The `go` command no longer attempts to maintain compatibility with the previous older version of Go.
+     * The `go` command is more careful about keeping checksums of `go.mod` files in the `go.sum` file.
 <!-- If you update this list, also update /ref/mod#go-mod-file-go. -->
 
-A `go.mod` file may contain at most one `go` directive. Most commands will add a
-`go` directive with the current Go version if one is not present.
+* INDIRECT dependency
+  ```go.mod
+  ...
+  require ()
+  
+  // ⚠️SEPARATE require block⚠️
+  require (
+    ...  // indirect
+  )
+  ```
 
 ## toolchain {#toolchain}
 
@@ -248,6 +237,47 @@ Go Modules Reference.
 
 See “[Go toolchains](/doc/toolchain)” for details about how the `toolchain` line
 affects Go toolchain selection.
+
+## godebug {#godebug}
+
+Indicates the default [GODEBUG](/doc/godebug) settings to be applied to the main packages of this module.
+These override any toolchain defaults, and are overridden by explicit `//go:debug` lines in main packages.
+
+### Syntax {#godebug-syntax}
+
+<pre>godebug <var>debug-key</var>=<var>debug-value</var></pre>
+
+<dl>
+    <dt>debug-key</dt>
+    <dd>The name of the setting to be applied.
+      A list of settings and the versions they were introduced in can be found at
+      <a href="/doc/godebug#history">GODEBUG History</a>.
+    </dd>
+    <dt>debug-value</dt>
+    <dd>The value provided to the setting.
+      If not otherwise specified, <code>0</code> to disable and <code>1</code> to enable the named behavior.</dd>
+</dl>
+
+### Examples {#godebug-examples}
+
+* Use the new 1.23 `asynctimerchan=0` behavior:
+  ```
+  godebug asynctimerchan=0
+  ```
+* Use the default GODEBUGs from Go 1.21, but the old `panicnil=1` behavior:
+  ```
+  godebug (
+      default=go1.21
+      panicnil=1
+  )
+  ```
+
+### Notes {#godebug-notes}
+
+GODEBUG settings only apply for builds of main packages and test binaries in the current module.
+They have no effect when a module is used as a dependency.
+
+See “[Go, Backwards Compatibility, and GODEBUG](/doc/godebug)” for details on backwards compatibility.
 
 ## require {#require}
 
@@ -303,6 +333,53 @@ For more about managing dependencies, see the following:
 * [Discovering available updates](/doc/modules/managing-dependencies#discovering_updates)
 * [Upgrading or downgrading a dependency](/doc/modules/managing-dependencies#upgrading)
 * [Synchronizing your code's dependencies](/doc/modules/managing-dependencies#synchronizing)
+
+## tool {#tool}
+
+Adds a package as a dependency of the current module, and makes it available to run with `go tool` when the current working directory is within this module.
+
+### Syntax {#tool-syntax}
+
+<pre>tool <var>package-path</var></pre>
+
+<dl>
+    <dt>package-path</dt>
+    <dd>The tool's package path, a concatenation of the module containing
+        the tool and the (possibly empty) path to the package implementing
+        the tool within the module.</dd>
+</dl>
+
+### Examples {#tool-examples}
+
+* Declaring a tool implemented in the current module:
+    ```
+    module example.com/mymodule
+
+    tool example.com/mymodule/cmd/mytool
+    ```
+* Declaring a tool implemented in a separate module:
+    ```
+    module example.com/mymodule
+
+    tool example.com/atool/cmd/atool
+
+    require example.com/atool v1.2.3
+    ```
+
+### Notes {#tool-notes}
+
+You can use `go tool` to run tools declared in your module by fully qualified package path
+or, if there is no ambiguity, by the last path segment. In the first example
+above you could run `go tool mytool` or `go tool example.com/mymodule/cmd/mytool`.
+
+In workspace mode, you can use `go tool` to run a tool declared in any workspace module.
+
+Tools are built using the same module graph as the module itself. A [`require`
+directive](#require) is needed to select the version of the module that
+implements the tool. Any [`replace` directives](#replace), or [`exclude`
+directives](#exclude) also apply to the tool and its dependencies.
+
+For more information see [Tool dependencies](/doc/modules/managing-dependencies#tools).
 
 ## replace {#replace}
 

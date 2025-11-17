@@ -54,7 +54,7 @@ window.initFuncs = [];
         e.target.classList.add('forced-closed');
         e.target.classList.remove('forced-open');
       });
-      
+
       // ensure focus is removed when esc is pressed
       const focusOutOnEsc = e => {
         if (e.key === 'Escape') {

@@ -186,7 +186,7 @@ and click on "Generate Password" in the page's top right menu bar.
 You will be redirected to accounts.google.com to sign in.
 </li>
 <li>
-After signing in, you will be taken to a page with the title "Configure Git".
+After signing in, you will be taken to a page with the heading "Configure Git".
 This page contains a personalized script that when run locally will configure Git
 to hold your unique authentication key.
 This key is paired with one that is generated and stored on the server,
@@ -442,6 +442,16 @@ It's different but powerful and familiarity with it will help you understand
 the flow.
 </p>
 
+<p>
+The following sections give a brief walkthrough of submitting a change via Gerrit.
+For more details on interacting with Gerrit, refer to
+<a href="https://gerrit-review.googlesource.com/Documentation/index.html">Gerrit's documentation</a>.
+In particular, we recommend reading the
+<a href="https://gerrit-review.googlesource.com/Documentation/user-review-ui.html">Review UI Overview</a>
+and <a href="https://gerrit-review.googlesource.com/Documentation/intro-gerrit-walkthrough-github.html">
+Basic Gerrit Walkthrough — For GitHub Users</a> pages.
+</p>
+
 <h3 id="gerrit_overview">Overview</h3>
 
 <p>
@@ -537,7 +547,8 @@ The rest of this section describes these steps in more detail.
 In addition to a recent Go installation, you need to have a local copy of the source
 checked out from the correct repository.
 You can check out the Go source repo onto your local file system anywhere
-you want as long as it's outside your <code>GOPATH</code>.
+you want as long as it's outside your <code>GOPATH</code>
+(defaults to the directory <code>go</code> in your home directory).
 Clone from <code>go.googlesource.com</code> (not GitHub):
 </p>
 
@@ -622,16 +633,23 @@ tree</i> to make sure the changes don't break other packages or programs.
 
 <h4 id="test-gorepo">In the main Go repository</h4>
 
-<p>This can be done by running <code>all.bash</code>:</p>
+<p>
+For standard library packages, all tests within the package must pass:
+</p>
+
+<pre>
+$ go test
+</pre>
+
+<p>
+The short test suite for the entire tree can be run with <code>all.bash</code>
+(To build under Windows use <code>all.bat</code>):
+</p>
 
 <pre>
 $ cd go/src
 $ ./all.bash
 </pre>
-
-<p>
-(To build under Windows use <code>all.bat</code>)
-</p>
 
 <p>
 After running for a while and printing a lot of testing output, the command should finish
@@ -905,6 +923,11 @@ failure appears in other recent commits on the same platform.
 In this case,
 feel free to write a comment in Gerrit to mention that the failure is
 unrelated to your change, to help maintainers understand the situation.
+You can also search GitHub issues for the failing error message
+or browse <a href="https://github.com/golang/go/issues?q=is%3Aissue%20watchflakes%20sort%3Aupdated-desc">recently updated <code>watchflakes</code> issues</a>.
+If your change is based on an older commit
+or it looks like someone else might have already fixed the problem,
+try rebasing to the latest master commit via <code>git rebase</code>.
 </p>
 
 <h3 id="reviews">Reviews</h3>
@@ -1018,6 +1041,17 @@ This section collects a number of other comments that are
 outside the issue/edit/code review/submit process itself.
 </p>
 
+<h3 id="gopls">Gopls</h3>
+
+<p>
+When working on the main Go repository and using <code>gopls</code> with your editor,
+the <code>go</code> command invoked by <code>gopls</code>
+must correspond to the version of the source code you are working on.
+The <code>go</code> command can be built with <code>make.bash</code>
+and the <code>bin</code> directory should be added to your <code>PATH</code>.
+See <a href="https://go.googlesource.com/tools/+/refs/heads/master/gopls/doc/advanced.md">
+Gopls: Advanced topics</a> for additional details.
+</p>
 
 <h3 id="copyright">Copyright headers</h3>
 
@@ -1300,4 +1334,10 @@ $ git codereview mail HEAD
 <p>
 Make sure to explicitly specify <code>HEAD</code>, which is usually not required when sending
 single changes. More details can be found in the <a href="https://pkg.go.dev/golang.org/x/review/git-codereview?tab=doc#hdr-Multiple_Commit_Work_Branches">git-codereview documentation</a>.
+</p>
+
+<h3 id="minor_releases">Minor Releases</h3>
+
+<p>
+If you want to make a change to a release branch for backporting, see <a href="/wiki/MinorReleases">Minor Releases</a>.
 </p>

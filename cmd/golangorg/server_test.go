@@ -7,7 +7,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"go/build"
+	"io/fs"
 	"net/http/httptest"
 	"net/url"
 	"os"
@@ -18,6 +18,8 @@ import (
 	"testing"
 
 	"golang.org/x/net/html"
+	"golang.org/x/website"
+	"golang.org/x/website/internal/history"
 	"golang.org/x/website/internal/webtest"
 )
 
@@ -29,25 +31,11 @@ func TestWeb(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, file := range files {
-		switch filepath.ToSlash(file) {
-		case "testdata/live.txt":
+		if filepath.ToSlash(file) == "testdata/live.txt" {
 			continue
-		case "testdata/go1.19.txt":
-			if !haveRelease("go1.19") {
-				continue
-			}
 		}
 		webtest.TestHandler(t, file, h)
 	}
-}
-
-func haveRelease(release string) bool {
-	for _, tag := range build.Default.ReleaseTags {
-		if tag == release {
-			return true
-		}
-	}
-	return false
 }
 
 var bads = []string{
@@ -228,11 +216,6 @@ func TestAll(t *testing.T) {
 							return
 						}
 					}
-					if u.Path == "/doc/godebug" {
-						// Lives in GOROOT and does not exist in Go 1.20,
-						// so skip the check to avoid failing the test on Go 1.20.
-						return
-					}
 
 					// Clear #fragment and build up fully qualified https://go.dev/ URL and check.
 					// Only check each link one time during this test,
@@ -290,12 +273,19 @@ func fixURL(u *url.URL) string {
 		return u.String()
 	case "github.com":
 		if strings.HasPrefix(u.Path, "/golang/go/issues/") {
-			u.Host = "go.dev"
+			u.Host = ""
+			u.Scheme = ""
 			u.Path = "/issue/" + strings.TrimPrefix(u.Path, "/golang/go/issues/")
+			if u.Path == "/issue/new/choose" {
+				// A special case to deal with the '/choose' suffix.
+				// See comment in internal/redirect.newIssueHandler.
+				u.Path = "/issue/new"
+			}
 			return u.String()
 		}
 		if strings.HasPrefix(u.Path, "/golang/go/wiki/") {
-			u.Host = "go.dev"
+			u.Host = ""
+			u.Scheme = ""
 			u.Path = "/wiki/" + strings.TrimPrefix(u.Path, "/golang/go/wiki/")
 			return u.String()
 		}
@@ -311,4 +301,31 @@ func findAttr(n *html.Node, name string) string {
 		}
 	}
 	return ""
+}
+
+// TestReleaseNotesHaveDate tests that release notes
+// include the date of the corresponding major release.
+// See go.dev/issue/54170.
+func TestReleaseNotesHaveDate(t *testing.T) {
+	for _, r := range history.Majors {
+		if r.Version.Before(history.Version{X: 1, Y: 24}) {
+			// No dates in release notes before Go 1.24.
+			break
+		}
+		maj := r.Version.MajorPrefix()
+		t.Run(maj, func(t *testing.T) {
+			name := fmt.Sprintf("doc/go%s.md", maj)
+			have, err := fs.ReadFile(website.Content(), name)
+			if err != nil {
+				t.Fatalf("Go %s release notes (_content/%s) can't be read: %v", maj, name, err)
+			}
+			want := fmt.Sprintf("[%s %d](/doc/devel/release#go%s)", r.Date.Month, r.Date.Year, r.Version)
+			if r.Future {
+				want = fmt.Sprintf("%s %d", r.Date.Month, r.Date.Year)
+			}
+			if !strings.Contains(string(have), want) {
+				t.Errorf("Go %s release notes (_content/%s) doesn't contain the release date and link to release history page %q", maj, name, want)
+			}
+		})
+	}
 }

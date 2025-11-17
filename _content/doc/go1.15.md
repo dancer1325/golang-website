@@ -315,7 +315,7 @@ The [objdump](/cmd/objdump/) tool now supports
 disassembling in GNU assembler syntax with the `-gnu`
 flag.
 
-## Core library {#library}
+## Standard library {#library}
 
 ### New embedded tzdata package {#time_tzdata}
 
@@ -387,12 +387,13 @@ return the new error
 #### [context](/pkg/context/)
 
 <!-- CL 223777 -->
-Creating a derived `Context` using a nil parent is now explicitly
-disallowed. Any attempt to do so with the
-[`WithValue`](/pkg/context/#WithValue),
-[`WithDeadline`](/pkg/context/#WithDeadline), or
-[`WithCancel`](/pkg/context/#WithCancel) functions
-will cause a panic.
+* create a derived `Context` -- via -- nil parent
+  * ⚠️EXPLICITLY disallowed⚠️
+  * -> cause a panic
+  * _Example:_
+    * [`WithValue`](/pkg/context/#WithValue),
+    * [`WithDeadline`](/pkg/context/#WithDeadline)
+    * [`WithCancel`](/pkg/context/#WithCancel) 
 
 <!-- context -->
 

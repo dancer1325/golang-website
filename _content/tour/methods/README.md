@@ -1,16 +1,18 @@
 # Methods
-* NOT classes
-* == methods on types
-  * `func receiver methodName.. {}`
-    * receiver can be
-      * type
-        * ⚠️ receiver into the method is a copy → outside the method is NOT modified ⚠️
-        * ⚠️ Either value or pointer is valid ⚠️
-      * pointer
-        * Reasons to use it:
-          * receiver must be changed
-          * avoid copying the value / each method call
-        * ⚠️ Either value or pointer is valid ⚠️
+* methods
+  * ❌NOT | classes❌
+    * Reason: 🧠NO exist classes | Go🧠
+  * | types
+    * `func receiver methodName.. {}`
+      * receiver can be
+        * type
+          * ⚠️ receiver into the method is a copy → outside the method is NOT modified ⚠️
+          * ⚠️ Either value or pointer is valid ⚠️
+        * pointer
+          * Reasons to use it:
+            * receiver must be changed
+            * avoid copying the value / each method call
+          * ⚠️ Either value or pointer is valid ⚠️
 * == function with special receiver argument
 * `go run methods.go` & `go run methods-funcs.go` & `go run methods-continued.go` & `go run methods-pointers.go` & `go run indirection.go` & `go run indirection-values.go` 
 
@@ -25,11 +27,11 @@
 # `type interfaceName interface` -- interface type --
 * := set of method signatures
 * ⚠️ if a variable implements interface’s methods → that interface type can hold it ⚠️
-  * 🧠 although at run time the value stored in the interface variable could change type, statically it’s typed 🧠
+  * 🧠 although | run-time, interface variable's value could change type, statically it’s typed 🧠
 * ⚠️ if a type implements interface’s methods → that interface is implemented ⚠️
-  * NOT `implements` keyword exist
+  * ❌`implements` keyword NOT exist❌
   * 👁️ implicit implementation 👁️
-    * == implementation can be delegated to another package
+    * == implementation can be delegated to ANOTHER package
 * `go run intefaces.go` & `go run interfaces-are-satisfied-implictly.go`
 
 # interface values

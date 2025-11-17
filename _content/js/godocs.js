@@ -327,6 +327,17 @@
         // Add the anchor to the "dt" element.
         addPermalink(el, el.find('> dt').first());
       });
+
+    // Add anchor links to article headers.
+    //
+    // This happens after generateTOC, so that the '¶' symbol
+    // won't be included in TOC items. See go.dev/issue/69816.
+    var headers = document.querySelectorAll('.Article h1[id], .Article h2[id], .Article h3[id], .Article h4[id]')
+    if (headers) {
+      headers.forEach(element => {
+        element.insertAdjacentHTML('beforeend', `<a href="#${element.id}" class="Article-idLink" aria-label="Go to ${element.id}">¶</a>`);
+      });
+    }
   }
 
   $('.js-expandAll').click(function() {
@@ -369,7 +380,7 @@
     personalizeInstallInstructions();
     updateVersionTags();
 
-    // site.html defines window.initFuncs in the <head> tag, and root.html and
+    // site.js defines window.initFuncs in the global scope, and play.js and
     // codewalk.js push their on-page-ready functions to the list.
     // We execute those functions here, to avoid loading jQuery until the page
     // content is loaded.
