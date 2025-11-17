@@ -33,6 +33,7 @@
     * allows
       * avoid blocking between different channels
     * `go run fainboring.go`
+  * TODO:
 
 # Goroutines
 * := independently executing function
